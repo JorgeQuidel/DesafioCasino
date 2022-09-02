@@ -1,56 +1,38 @@
-import java.util.ArrayList;
 import java.util.Scanner;
-
 public class Blackjack {
     public static void main(String[] args) {
         jugar();
     }
-
     public static void jugar() {
-        //Crea la baraja y las manos del Jugador y el Dealer
         String[][] baraja = crearBaraja();
-        ArrayList<String> manoJugador = new ArrayList<>();
-        ArrayList<String> manoDealer = new ArrayList<>();
+        String[] manoJugador = crearMano();
+        String[] manoDealer = crearMano();
 
-        //Se barajan y reparten las cartas
         barajar(baraja);
         repartir(baraja, manoJugador);
         repartir(baraja, manoDealer);
 
-        //Loop del juego hasta que alguien gana/pierde
         while(true){
-            System.out.println("Mano Jugador = " + manoJugador);
-            System.out.println("Mano Dealer = " + "["+ manoDealer.get(0) + ", ?]");
+            mostrarManoOcultaDealer(manoDealer);
+            mostrarManoJugador(manoJugador);
 
-
-            //Verifica si sale Blackjack o se pasa de 21 automáticamente
-            if(verificarGanadorAutomatico(manoJugador,manoDealer)){
-                mostrarEstadoJuego(manoJugador, manoDealer);
+            if(esBlackjack(manoJugador)){
+                System.out.println("\nGANASTE!");
+                mostrarResultados(manoJugador, manoDealer);
+                break;
+            }
+            if(esMayorQue21(manoJugador)){
+                System.out.println("\nPERDISTE!");
+                mostrarResultados(manoJugador, manoDealer);
                 break;
             }
 
             int opcion = elegirOpcion();
 
-            if(opcion == 1){
+            if (opcion == 1) {
                 pedirCarta(baraja, manoJugador);
             } else if (opcion == 2) {
-                System.out.println();
-                System.out.println("Mano Jugador = " + manoJugador);
-                System.out.println("Mano Dealer = " + manoDealer);
-
-                //Suma cartas al Dealer hasta que sea igual o mayor a 17
-                do{
-                    pedirCarta(baraja, manoDealer);
-                }while(sumarPuntos(manoDealer)<17);
-
-                //Verifica si el Dealer se paso de 21 al sumar cartas
-                if(verificarGanadorAutomatico(manoJugador,manoDealer)){
-                    mostrarEstadoJuego(manoJugador, manoDealer);
-                    break;
-                }
-
-                verificarGanadorAlBajarse(manoJugador,manoDealer);
-                mostrarEstadoJuego(manoJugador, manoDealer);
+                bajarse(baraja, manoJugador, manoDealer);
                 break;
             } else if (opcion == 3) {
                 leerReglas();
@@ -58,10 +40,8 @@ public class Blackjack {
                 System.out.println("Hasta pronto");
                 break;
             }
-
         }
     }
-
     public static String[][] crearBaraja() {
         String[] indices = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         String[] pintas = {"Corazon", "Diamante", "Trebol", "Espada"};
@@ -74,7 +54,9 @@ public class Blackjack {
         }
         return baraja;
     }
-
+    public static String[] crearMano(){
+        return new String[12];
+    }
     public static void barajar(String[][] baraja) {
         for (int i = 0; i < baraja.length; i++) {
             for (int j = 0; j < baraja[i].length; j++) {
@@ -87,107 +69,182 @@ public class Blackjack {
             }
         }
     }
-
-    public static void pedirCarta(String[][] baraja, ArrayList<String> mano) {
-        int pintaRandom;
-        int indiceRandom;
-        do {
-            pintaRandom = (int)(Math.random()*4);
-            indiceRandom = (int)(Math.random()*13);
-        }while(baraja[pintaRandom][indiceRandom].equals(""));
-
-        mano.add(baraja[pintaRandom][indiceRandom]);
-        baraja[pintaRandom][indiceRandom] = "";
-    }
-
-    public static void repartir(String[][] baraja, ArrayList<String> mano) {
+    public static void repartir(String[][] baraja, String[] mano) {
         for (int i = 0; i < 2; i++) {
             pedirCarta(baraja,mano);
         }
     }
+    public static void pedirCarta(String[][] baraja, String[] mano) {
+        int posicionDisponible = contarCartas(mano);
 
-    public static ArrayList<Integer> asignarPuntos(ArrayList<String> mano) {
-        ArrayList<Integer> puntos = new ArrayList<>();
-
-        for (String carta : mano) {
-            String indice = carta.substring(carta.length() - 1);
-            switch (indice) {
-                case "A" -> puntos.add(11);
-                case "2" -> puntos.add(2);
-                case "3" -> puntos.add(3);
-                case "4" -> puntos.add(4);
-                case "5" -> puntos.add(5);
-                case "6" -> puntos.add(6);
-                case "7" -> puntos.add(7);
-                case "8" -> puntos.add(8);
-                case "9" -> puntos.add(9);
-                case "0", "J", "Q", "K" -> puntos.add(10);
+        for (int i = 0; i < baraja.length; i++) {
+            for (int j = 0; j < baraja[i].length; j++) {
+                if(!baraja[i][j].equals("")){
+                    mano[posicionDisponible] = baraja[i][j];
+                    baraja[i][j] = "";
+                    return;
+                }
             }
         }
-        return puntos;
     }
+    public static void bajarse(String[][] baraja, String[] manoJugador, String[] manoDealer) {
+        mostrarManoDealer(manoDealer);
+        mostrarManoJugador(manoJugador);
 
-    public static int sumarPuntos(ArrayList<String> mano) {
-        ArrayList<Integer> puntosPorCarta = asignarPuntos(mano);
-        int puntajeTotal = 0;
-        for (Integer punto : puntosPorCarta) {
-            puntajeTotal += punto;
+        if(esBlackjack(manoDealer)){
+            return;
         }
-        if(puntosPorCarta.contains(11) && puntajeTotal>21){
+
+        agregarCartasDealer(baraja, manoDealer);
+        verificarGanador(manoJugador, manoDealer);
+        mostrarResultados(manoJugador, manoDealer);
+    }
+    public static void agregarCartasDealer(String[][] baraja, String[] manoDealer) {
+        while(sumarPuntosMano(manoDealer)<17){
+            pedirCarta(baraja, manoDealer);
+        }
+    }
+    public static int sumarPuntosMano(String[] mano) {
+        int puntajeTotal = 0;
+        int cantidadCartas = contarCartas(mano);
+
+        for (int i = 0; i < cantidadCartas; i++) {
+            puntajeTotal += asignarValorCarta(mano[i]);
+        }
+
+        if(puntajeTotal>21 && contieneAs(mano)){
             puntajeTotal = puntajeTotal - 10;
         }
+
         return puntajeTotal;
     }
+    public static int asignarValorCarta(String carta) {
 
-    public static boolean esBlackJack(ArrayList<String> mano) {
-        ArrayList<String> indices = new ArrayList<>();
+        String indice = carta.split(" ")[1];
 
-        for (String carta : mano) {
-            String indice = carta.substring(carta.length() - 1);
-            indices.add(indice);
-        }
-
-        return (indices.contains("A") && (indices.contains("0") || indices.contains("J") || indices.contains("Q") || indices.contains("K")));
+        return switch (indice) {
+            case "A" -> 11;
+            case "2" -> 2;
+            case "3" -> 3;
+            case "4" -> 4;
+            case "5" -> 5;
+            case "6" -> 6;
+            case "7" -> 7;
+            case "8" -> 8;
+            case "9" -> 9;
+            case "10", "J", "Q", "K" -> 10;
+            default -> 0;
+        };
     }
-    public static boolean verificarGanadorAutomatico(ArrayList<String> manoJugador, ArrayList<String> manoDealer) {
-        int puntosJugador = sumarPuntos(manoJugador);
-        int puntosDealer = sumarPuntos(manoDealer);
+    public static boolean esBlackjack(String[] mano) {
+        int cantidadCartas = contarCartas(mano);
 
-
-        if(esBlackJack(manoJugador)){
-            System.out.println();
-            System.out.println("GANASTE!");
-            return true;
-        }else if(puntosJugador>21){
-            System.out.println();
-            System.out.println("PERDISTE!");
-            return true;
-        }else if(puntosDealer>21){
-            System.out.println();
-            System.out.println("GANASTE!");
-            return true;
-        }else {
+        if (cantidadCartas > 2) {
             return false;
         }
-    }
 
-    public static void verificarGanadorAlBajarse(ArrayList<String> manoJugador, ArrayList<String> manoDealer) {
-        int puntosJugador = sumarPuntos(manoJugador);
-        int puntosDealer = sumarPuntos(manoDealer);
-
-        if(esBlackJack(manoDealer)) {
-            System.out.println();
-            System.out.println("PERDISTE!");
-        }else if(puntosDealer>puntosJugador){
-            System.out.println();
-            System.out.println("PERDISTE!");
-        }else if(puntosDealer<puntosJugador){
-            System.out.println();
-            System.out.println("GANASTE!");
-        }else{
-            System.out.println();
-            System.out.println("PERDISTE!");
+        if (contieneAs(mano) && contiene10(mano)) {
+            System.out.println("\n!!BLACKJACK!!");
+            return true;
         }
+        return false;
+    }
+    public static boolean esMayorQue21(String[] mano){
+        int puntos = sumarPuntosMano(mano);
+        return puntos > 21;
+    }
+    public static boolean contieneAs(String[] mano){
+        int cantidadCartas = contarCartas(mano);
+
+        for (int carta = 0; carta < cantidadCartas; carta++) {
+            if (mano[carta].split(" ")[1].equals("A")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean contiene10(String[] mano){
+        int cantidadCartas = contarCartas(mano);
+
+        for (int carta = 0; carta < cantidadCartas; carta++) {
+            if (asignarValorCarta(mano[carta]) == 10) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void verificarGanador(String[] manoJugador, String[] manoDealer) {
+        int puntosJugador = sumarPuntosMano(manoJugador);
+        int puntosDealer = sumarPuntosMano(manoDealer);
+
+        if(esMayorQue21(manoDealer)){
+            System.out.println("\nGANASTE!");
+        }else if(puntosDealer>puntosJugador) {
+            System.out.println("\nPERDISTE!");
+        }else if (puntosDealer<puntosJugador) {
+            System.out.println("\nPERDISTE!");
+        }else {
+            System.out.println("\nPERDISTE!");
+        }
+    }
+    public static int contarCartas(String[] mano){
+        int cantidadCartas = 0;
+        for (String carta : mano) {
+            if (carta == null) {
+                return cantidadCartas;
+            }
+            cantidadCartas++;
+        }
+        return cantidadCartas;
+    }
+    public static void mostrarMenu() {
+        System.out.println("[1].Pedir Carta");
+        System.out.println("[2].Bajarte");
+        System.out.println("[3].Leer las reglas");
+        System.out.println("[4].Salir del juego");
+    }
+    public static int elegirOpcion() {
+        Scanner input = new Scanner(System.in);
+        int opcion = 0;
+        do{
+            try{
+                mostrarMenu();
+                opcion = input.nextInt();
+            }catch (Exception e){
+                System.out.println("Por favor ingrese un numero que corresponda a una de las opciones");
+                input.next();
+            }
+        }while(opcion<0 || opcion>4);
+
+        return opcion;
+    }
+    public static void mostrarManoJugador(String[] mano){
+        int cantidadCartas = contarCartas(mano);
+        System.out.print("Mano Jugador = ");
+        for (int i = 0; i < cantidadCartas; i++) {
+            System.out.print("["+mano[i]+"]");
+        }
+        System.out.println();
+    }
+    public static void mostrarManoDealer(String[] mano){
+        int cantidadCartas = contarCartas(mano);
+        System.out.print("Mano Dealer = ");
+        for (int i = 0; i < cantidadCartas; i++) {
+            System.out.print("["+mano[i]+"]");
+        }
+        System.out.println();
+    }
+    public static void mostrarManoOcultaDealer(String[] manoDealer){
+        System.out.println("Mano Dealer = ["+ manoDealer[0] + ", ?]");
+    }
+    public static void mostrarResultados(String[] manoJugador, String[] manoDealer) {
+        int puntosJugador = sumarPuntosMano(manoJugador);
+        int puntosDealer = sumarPuntosMano(manoDealer);
+
+        mostrarManoDealer(manoDealer);
+        System.out.println("Puntos Dealer = " + puntosDealer);
+        mostrarManoJugador(manoJugador);
+        System.out.println("Puntos Jugador = " + puntosJugador);
     }
     public static void leerReglas() {
         System.out.println();
@@ -209,37 +266,6 @@ public class Blackjack {
         System.out.println("-Si te llegas a pasar de 21 pierdes automaticamente, lo mismo para el Dealer");
         System.out.println("-Si empatas con el Dealer, pierdes");
         System.out.println();
-    }
-
-    public static void mostrarEstadoJuego(ArrayList<String> manoJugador, ArrayList<String> manoDealer) {
-        System.out.println();
-        System.out.println("Mano Jugador = " + manoJugador);
-        System.out.println("Puntos Jugador = " + sumarPuntos(manoJugador));
-        System.out.println("Mano Dealer = " + manoDealer);
-        System.out.println("Puntos Dealer = " + sumarPuntos(manoDealer));
-    }
-
-    public static void mostrarMenu() {
-        System.out.println("[1].Pedir Carta");
-        System.out.println("[2].Bajarte");
-        System.out.println("[3].Leer las reglas");
-        System.out.println("[4].Salir del juego");
-    }
-
-    public static int elegirOpcion() {
-        Scanner input = new Scanner(System.in);
-        int opcion = 0;
-        do{
-            try{
-                mostrarMenu();
-                opcion = input.nextInt();
-            }catch (Exception e){
-                System.out.println("Por favor ingrese un numero que corresponda a una de las opciones");
-                input.next();
-            }
-        }while(opcion<0 || opcion>4);
-
-        return opcion;
     }
 
 }
