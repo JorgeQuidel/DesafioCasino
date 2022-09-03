@@ -182,7 +182,7 @@ public class Blackjack {
         }else if(puntosDealer>puntosJugador) {
             System.out.println("\nPERDISTE!");
         }else if (puntosDealer<puntosJugador) {
-            System.out.println("\nPERDISTE!");
+            System.out.println("\nGANASTE!");
         }else {
             System.out.println("\nPERDISTE!");
         }
