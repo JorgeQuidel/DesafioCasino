@@ -14,7 +14,6 @@ public class Blackjack {
 
         if(esBlackjack(manoJugador)) {
             System.out.println("\nGANASTE!");
-            mostrarResultados(manoJugador, manoDealer);
             return;
         }
 
@@ -24,7 +23,6 @@ public class Blackjack {
 
             if(esMayorQue21(manoJugador)){
                 System.out.println("\nPERDISTE!");
-                mostrarResultados(manoJugador, manoDealer);
                 break;
             }
 
@@ -90,8 +88,8 @@ public class Blackjack {
         }
     }
     public static void bajarse(String[] manoJugador, String[] manoDealer) {
-        verificarGanador(manoJugador, manoDealer);
-        mostrarResultados(manoJugador, manoDealer);
+        String[] manoGanadora = verificarGanador(manoJugador, manoDealer);
+        mostrarResultados(manoJugador, manoDealer, manoGanadora);
     }
     public static void turnoDealer(String[][] baraja, String[] manoDealer) {
         mostrarManoDealer(manoDealer);
@@ -174,18 +172,18 @@ public class Blackjack {
         }
         return false;
     }
-    public static void verificarGanador(String[] manoJugador, String[] manoDealer) {
+    public static String[] verificarGanador(String[] manoJugador, String[] manoDealer) {
         int puntosJugador = sumarPuntosMano(manoJugador);
         int puntosDealer = sumarPuntosMano(manoDealer);
 
         if(esMayorQue21(manoDealer)){
-            System.out.println("\nGANASTE!");
+            return manoJugador;
         }else if(puntosDealer>puntosJugador) {
-            System.out.println("\nPERDISTE!");
+            return manoDealer;
         }else if (puntosDealer<puntosJugador) {
-            System.out.println("\nGANASTE!");
+            return manoJugador;
         }else {
-            System.out.println("\nPERDISTE!");
+            return manoDealer;
         }
     }
     public static int contarCartas(String[] mano){
@@ -238,9 +236,15 @@ public class Blackjack {
     public static void mostrarManoOcultaDealer(String[] manoDealer){
         System.out.println("Mano Dealer = ["+ manoDealer[0] + ", ?]");
     }
-    public static void mostrarResultados(String[] manoJugador, String[] manoDealer) {
+    public static void mostrarResultados(String[] manoJugador, String[] manoDealer, String[] manoGanadora) {
         int puntosJugador = sumarPuntosMano(manoJugador);
         int puntosDealer = sumarPuntosMano(manoDealer);
+
+        if(manoGanadora == manoDealer){
+            System.out.println("\nPERDISTE!");
+        }else {
+            System.out.println("\nGANASTE!");
+        }
 
         mostrarManoDealer(manoDealer);
         System.out.println("Puntos Dealer = " + puntosDealer);
