@@ -12,15 +12,16 @@ public class Blackjack {
         repartir(baraja, manoJugador);
         repartir(baraja, manoDealer);
 
+        if(esBlackjack(manoJugador)) {
+            System.out.println("\nGANASTE!");
+            mostrarResultados(manoJugador, manoDealer);
+            return;
+        }
+
         while(true){
             mostrarManoOcultaDealer(manoDealer);
             mostrarManoJugador(manoJugador);
 
-            if(esBlackjack(manoJugador)){
-                System.out.println("\nGANASTE!");
-                mostrarResultados(manoJugador, manoDealer);
-                break;
-            }
             if(esMayorQue21(manoJugador)){
                 System.out.println("\nPERDISTE!");
                 mostrarResultados(manoJugador, manoDealer);
