@@ -33,7 +33,8 @@ public class Blackjack {
             if (opcion == 1) {
                 pedirCarta(baraja, manoJugador);
             } else if (opcion == 2) {
-                bajarse(baraja, manoJugador, manoDealer);
+                turnoDealer(baraja, manoDealer);
+                bajarse(manoJugador, manoDealer);
                 break;
             } else if (opcion == 3) {
                 leerReglas();
@@ -88,17 +89,16 @@ public class Blackjack {
             }
         }
     }
-    public static void bajarse(String[][] baraja, String[] manoJugador, String[] manoDealer) {
+    public static void bajarse(String[] manoJugador, String[] manoDealer) {
+        verificarGanador(manoJugador, manoDealer);
+        mostrarResultados(manoJugador, manoDealer);
+    }
+    public static void turnoDealer(String[][] baraja, String[] manoDealer) {
         mostrarManoDealer(manoDealer);
-        mostrarManoJugador(manoJugador);
-
         if(esBlackjack(manoDealer)){
             return;
         }
-
         agregarCartasDealer(baraja, manoDealer);
-        verificarGanador(manoJugador, manoDealer);
-        mostrarResultados(manoJugador, manoDealer);
     }
     public static void agregarCartasDealer(String[][] baraja, String[] manoDealer) {
         while(sumarPuntosMano(manoDealer)<17){
