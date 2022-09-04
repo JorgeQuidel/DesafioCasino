@@ -176,8 +176,10 @@ public class Blackjack {
         int puntosJugador = sumarPuntosMano(manoJugador);
         int puntosDealer = sumarPuntosMano(manoDealer);
 
-        if(esMayorQue21(manoDealer)){
+        if(puntosDealer>21){
             return manoJugador;
+        }else if(puntosJugador>21) {
+            return manoDealer;
         }else if(puntosDealer>puntosJugador) {
             return manoDealer;
         }else if (puntosDealer<puntosJugador) {
