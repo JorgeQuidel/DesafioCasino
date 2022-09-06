@@ -31,8 +31,7 @@ public class Blackjack {
             if (opcion == 1) {
                 pedirCarta(baraja, manoJugador);
             } else if (opcion == 2) {
-                turnoDealer(baraja, manoDealer);
-                bajarse(manoJugador, manoDealer);
+                bajarse(baraja ,manoJugador, manoDealer);
                 break;
             } else if (opcion == 3) {
                 leerReglas();
@@ -91,7 +90,8 @@ public class Blackjack {
             }
         }
     }
-    public static void bajarse(String[] manoJugador, String[] manoDealer) {
+    public static void bajarse(String[][] baraja,String[] manoJugador, String[] manoDealer) {
+        turnoDealer(baraja, manoDealer);
         String[] manoGanadora = verificarGanador(manoJugador, manoDealer);
         mostrarResultados(manoJugador, manoDealer, manoGanadora);
     }
