@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BlackjackTest {
     private String[] manoJugador;
@@ -52,5 +51,14 @@ public class BlackjackTest {
         Blackjack.pedirCarta(baraja, manoJugador);
         assertArrayEquals(manoJugador, manoEsperada);
     }
-
+    @Test
+    @DisplayName("Prueba unitaria metodo bajarse para caso normal")
+    public void bajarseCasoNormal(){
+        manoDealer = new String[] {"Trebol 10", "Espada 6", null};
+        manoJugador = new String[] {"Diamante 10", "Corazon Q"};
+        baraja = Blackjack.crearBaraja();
+        String[] manoEsperada = {"Trebol 10", "Espada 6", "Corazon A"};
+        Blackjack.bajarse(baraja, manoJugador, manoDealer);
+        assertArrayEquals(manoDealer, manoEsperada);
+    }
 }
