@@ -74,10 +74,6 @@ public class Blackjack {
         }
     }
     public static void pedirCarta(String[][] baraja, String[] mano) {
-        if(baraja == null){
-            return;
-        }
-
         int espacioDisponible = contarCartas(mano);
 
         for (int i = 0; i < baraja.length; i++) {
