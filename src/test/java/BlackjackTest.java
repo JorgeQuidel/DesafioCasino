@@ -1,3 +1,4 @@
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +36,15 @@ public class BlackjackTest {
         assertEquals(manoDealer, manoGanadora);
     }
     @Test
+    @DisplayName("Prueba unitaria metodo pedirCarta para caso mano vacia")
+    public void verificarGanadorTestCasoManoNula(){
+        var logger = Logger.getLogger("Blackjack.clas");
+        var manoDealer = new String[] {"Trebol 2", "Espada 10", "Corazon 4", "Trebol 4"};
+        assertThrows(NullPointerException.class, () ->
+                Blackjack.verificarGanador(null, manoDealer), "Se ha ingresado una entrada nula");
+        logger.info("Se ha lanzado la excepcion NullPointerException, dado que la mano del jugador estaba nula");
+    }
+    @Test
     @DisplayName("Prueba unitaria metodo pedirCarta para caso normal")
     public void pedirCartaTestCasoNormal(){
         manoJugador = new String[] {"Diamante 2", "Corazon Q", null};
@@ -45,11 +55,12 @@ public class BlackjackTest {
     }
     @Test
     @DisplayName("Prueba unitaria metodo pedirCarta para caso baraja vacia")
-    public void pedirCartaTestBarajaVacia(){
-        manoJugador = new String[] {"Diamante 2", "Corazon Q"};
-        String[] manoEsperada = {"Diamante 2", "Corazon Q"};
-        Blackjack.pedirCarta(baraja, manoJugador);
-        assertArrayEquals(manoJugador, manoEsperada);
+    public void pedirCartaTestManoNula(){
+        baraja = Blackjack.crearBaraja();
+        var logger = Logger.getLogger("Blackjack.clas");
+        assertThrows(NullPointerException.class, () ->
+                Blackjack.pedirCarta(baraja, null), "Se ha ingresado una entrada nula");
+        logger.info("Se ha lanzado la excepcion NullPointerException, dado que la mano entregada estaba nula");
     }
     @Test
     @DisplayName("Prueba unitaria metodo bajarse para caso normal")
