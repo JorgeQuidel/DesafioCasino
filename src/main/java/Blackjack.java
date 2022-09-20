@@ -5,39 +5,38 @@ public class Blackjack {
     }
     public static void jugar() {
         String[][] baraja = crearBaraja();
-        String[] manoJugador = crearMano();
+        String[][] manoJugador = new String[][]{crearMano(), crearMano()};
         String[] manoDealer = crearMano();
 
         barajar(baraja);
-        repartir(baraja, manoJugador);
+        repartir(baraja, manoJugador[0]);
         repartir(baraja, manoDealer);
 
-        if(esBlackjack(manoJugador)) {
+        if(esBlackjack(manoJugador[0])) {
             System.out.println("\nGANASTE!");
             return;
         }
 
+        bucle:
         while(true){
             mostrarManoOcultaDealer(manoDealer);
-            mostrarManoJugador(manoJugador);
+            mostrarManoJugador(manoJugador[0]);
 
-            if(esMayorQue21(manoJugador)){
+            if(esMayorQue21(manoJugador[0])){
                 System.out.println("\nPERDISTE!");
                 break;
             }
 
             int opcion = elegirOpcion();
 
-            if (opcion == 1) {
-                pedirCarta(baraja, manoJugador);
-            } else if (opcion == 2) {
-                bajarse(baraja ,manoJugador, manoDealer);
-                break;
-            } else if (opcion == 3) {
-                leerReglas();
-            } else if (opcion == 4) {
-                System.out.println("Hasta pronto");
-                break;
+            switch (opcion) {
+                case 1 -> pedirCarta(baraja, manoJugador[0]);
+                case 2 -> {
+                    bajarse(baraja, manoJugador[0], manoDealer);
+                    break bucle;
+                }
+                case 3 -> leerReglas();
+                case 4 ->System.out.println("Hasta pronto");
             }
         }
     }
