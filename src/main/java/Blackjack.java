@@ -126,7 +126,7 @@ public class Blackjack {
 
     }
 
-    private static String[] verificarGanadorDobleMano(String[] manoJugador1, String[] manoJugador2, String[] manoDealer) {
+    public static String[] verificarGanadorDobleMano(String[] manoJugador1, String[] manoJugador2, String[] manoDealer) {
         int puntosJugadorMano1 = sumarPuntosMano(manoJugador1);
         int puntosJugadorMano2 = sumarPuntosMano(manoJugador2);
         int puntosDealer = sumarPuntosMano(manoDealer);
