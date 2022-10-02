@@ -10,13 +10,23 @@ public class Juego {
         this.jugadores = jugadores;
     }
 
-    public void turnoJugador(Baraja baraja, Jugador jugador){}
+    public void turnoJugador(Baraja baraja, Jugador jugador){
+        switch (elegirOpcion()) {
+            case 1 -> jugador.pedirCarta(baraja);
+            case 2 -> jugador.bajarse();
+            case 3 -> jugador.partirMano();
+            case 4 -> System.out.println("Hasta pronto");
+            default -> System.out.println("Por favor, ingrese una de las opciones");
+        }
+    }
 
-    public void turnoDealer(Baraja baraja, Jugador dealer){}
+    public void turnoDealer(Baraja baraja, Jugador dealer){
+        while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
+    }
 
     public void verificarGanador(List<Jugador> jugadores){}
 
-    public int elegirOpcion() {
+    private int elegirOpcion() {
         Scanner input = new Scanner(System.in);
         int opcion = 0;
         try{

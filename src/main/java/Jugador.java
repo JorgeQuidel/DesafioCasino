@@ -12,6 +12,10 @@ public class Jugador {
         this.mano = new Mano();
     }
 
+    public void partirMano(){}
+
+    public void bajarse(){}
+
     public void iniciarMano(Baraja baraja) {
         for (int i = 0; i < 2; i++) pedirCarta(baraja);
     }
