@@ -7,8 +7,13 @@ public class Mano {
     public Mano(){
         this.cartas = new ArrayList<>();
     }
-    public void addCarta(Carta nuevaCarta){
+
+    public void añadirCarta(Carta nuevaCarta){
         cartas.add(nuevaCarta);
+    }
+
+    public int obtenerPuntaje(){
+        return cartas.stream().mapToInt(Carta::getValor).sum();
     }
 
     public List<Carta> getCartas() {

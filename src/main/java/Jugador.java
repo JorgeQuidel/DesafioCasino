@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Jugador {
     private String nombre;
     private boolean esDealer;
@@ -14,8 +12,12 @@ public class Jugador {
         this.mano = new Mano();
     }
 
-    public void mostrarMano(){
-        System.out.println(nombre + ": " + mano);
+    public void iniciarMano(Baraja baraja) {
+        for (int i = 0; i < 2; i++) pedirCarta(baraja);
+    }
+
+    public void pedirCarta(Baraja baraja){
+        mano.añadirCarta(baraja.sacarCarta());
     }
 
     public Mano getMano() {
@@ -26,18 +28,13 @@ public class Jugador {
         return apuesta;
     }
 
-    public void iniciarMano(Baraja baraja) {
-        for (int i = 0; i < 2; i++) pedirCarta(baraja);
-    }
-
-    public void pedirCarta(Baraja baraja){
-        mano.addCarta(baraja.sacarCarta());
-    }
-
     public void setApuesta(int apuesta) {
         this.apuesta = apuesta;
     }
 
+    public void mostrarMano(){
+        System.out.println(nombre + ": " + mano);
+    }
     @Override
     public String toString() {
         return "Jugador{" +
