@@ -15,11 +15,19 @@ public class ManoTest {
 
     @Test
     void agregarCartaTest(){
-        mano.addCarta(new Carta("8", "Diamante", 8));
-        mano.addCarta(new Carta("A", "Trebol", 11));
-        mano.addCarta(new Carta("10", "Corazon", 10));
+        mano.añadirCarta(new Carta("8", "Diamante", 8));
+        mano.añadirCarta(new Carta("A", "Trebol", 11));
+        mano.añadirCarta(new Carta("10", "Corazon", 10));
         var listaCartas = mano.getCartas();
 
         assertEquals(listaCartas.size(), 3);
     }
+
+    @Test
+    void puntajeTotalTest(){
+        mano.añadirCarta(new Carta("8", "Diamante", 8));
+        mano.añadirCarta(new Carta("A", "Trebol", 11));
+        assertEquals(mano.obtenerPuntaje(), 19);
+    }
+
 }
