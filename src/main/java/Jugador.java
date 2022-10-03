@@ -24,6 +24,10 @@ public class Jugador {
         mano.añadirCarta(baraja.sacarCarta());
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public Mano getMano() {
         return mano;
     }
