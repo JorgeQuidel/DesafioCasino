@@ -15,7 +15,7 @@ public class Utilidad {
 
     public static boolean contieneAs(Mano mano){
         return IntStream.range(0, mano.getCartas().size())
-                .anyMatch(carta -> mano.getCartas().get(carta).getIndice().equals("As"));
+                .anyMatch(carta -> mano.getCartas().get(carta).getIndice().equals("A"));
     }
 
     public static boolean contieneValor10(Mano mano){

@@ -24,6 +24,14 @@ public class Jugador {
         mano.añadirCarta(baraja.sacarCarta());
     }
 
+    public int puntajeMano(){
+        int puntaje = mano.obtenerPuntaje();
+        if(Utilidad.asVale11(mano)){
+            puntaje += 10;
+        }
+        return puntaje;
+    }
+
     public String getNombre() {
         return nombre;
     }

@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -22,12 +21,12 @@ public class Juego {
             default -> System.out.println("Por favor, ingrese una de las opciones");
         }
     }
-    public HashMap<String, Integer> obtenerPuntajes(List<Jugador> jugadores) {
+
+    public HashMap<String, Integer> obtenerPuntajes() {
         return jugadores.stream()
-                .collect(Collectors.toMap
-                        (Jugador::getNombre, jugador -> jugador.getMano().obtenerPuntaje(),
-                        (a, b) -> b, HashMap::new));
+                .collect(Collectors.toMap(Jugador::getNombre, Jugador::puntajeMano, (a, b) -> b, HashMap::new));
     }
+
     public void turnoDealer(Baraja baraja, Jugador dealer){
         while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
     }
