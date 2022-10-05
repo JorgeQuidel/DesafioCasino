@@ -1,5 +1,7 @@
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Juego {
     private Baraja baraja;
@@ -20,11 +22,14 @@ public class Juego {
         }
     }
 
+    public HashMap<String, Integer> obtenerPuntajes() {
+        return jugadores.stream()
+                .collect(Collectors.toMap(Jugador::getNombre, Jugador::puntajeMano, (a, b) -> b, HashMap::new));
+    }
+
     public void turnoDealer(Baraja baraja, Jugador dealer){
         while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
     }
-
-    public void verificarGanador(List<Jugador> jugadores){}
 
     private int elegirOpcion() {
         Scanner input = new Scanner(System.in);

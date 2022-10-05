@@ -40,4 +40,13 @@ public class JugadorTest {
         jugador.setApuesta(5000);
         assertEquals(jugador.getApuesta(), 5000);
     }
+
+    @Test
+    void puntajeManoTest(){
+        baraja.llenarBaraja();
+        for (int i = 0; i < 5; i++) {
+            jugador.pedirCarta(baraja);
+        }
+        assertEquals(jugador.puntajeMano(), 15);
+    }
 }
