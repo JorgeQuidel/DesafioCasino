@@ -23,8 +23,7 @@ public class Utilidad {
                 .anyMatch(carta -> mano.getCartas().get(carta).getValor() == 10);
     }
 
-    public static boolean asVale11(Mano mano){
-        int puntaje = mano.obtenerPuntaje();
-        return puntaje <= 21 && contieneAs(mano);
+    public static boolean asNoVale11(Mano mano){
+        return esMayorQue21(mano.obtenerPuntaje()) && contieneAs(mano);
     }
 }

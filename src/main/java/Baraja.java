@@ -10,7 +10,7 @@ public class Baraja {
     public void llenarBaraja(){
         String[] indices = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         String[] pintas = {"Corazon", "Diamante", "Trebol", "Espada"};
-        int[] valores = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
+        int[] valores = {11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
 
         List<Carta> cartas = new ArrayList<>();
 

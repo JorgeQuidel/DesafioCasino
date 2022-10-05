@@ -26,8 +26,8 @@ public class Jugador {
 
     public int puntajeMano(){
         int puntaje = mano.obtenerPuntaje();
-        if(Utilidad.asVale11(mano)){
-            puntaje += 10;
+        if(Utilidad.asNoVale11(mano)){
+            puntaje -= 10;
         }
         return puntaje;
     }
