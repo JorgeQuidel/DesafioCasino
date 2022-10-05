@@ -14,6 +14,10 @@ public class Carta {
         return valor;
     }
 
+    public String getIndice() {
+        return indice;
+    }
+
     @Override
     public String toString() {
         return indice + " " + pinta;
