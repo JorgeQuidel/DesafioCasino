@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Mano {
     private List<Carta> cartas;
@@ -14,6 +15,29 @@ public class Mano {
 
     public int obtenerPuntaje(){
         return cartas.stream().mapToInt(Carta::getValor).sum();
+    }
+
+    public boolean esBlackjack(){
+        if(cartas.size()>2){
+            return false;
+        }
+        return contieneAs() && contieneValor10();
+    }
+
+    public boolean esMayorQue21(){
+        return obtenerPuntaje() > 21;
+    }
+
+    public boolean contieneAs(){
+        return cartas.stream().anyMatch(value -> value.getIndice().equals("A"));
+    }
+
+    public boolean contieneValor10() {
+        return cartas.stream().anyMatch(value -> value.getValor() == 10);
+    }
+
+    public boolean asNoVale11(){
+        return esMayorQue21() && contieneAs();
     }
 
     public List<Carta> getCartas() {

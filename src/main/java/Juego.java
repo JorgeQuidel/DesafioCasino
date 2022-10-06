@@ -13,7 +13,7 @@ public class Juego {
     }
 
     public void turnoJugador(Baraja baraja, Jugador jugador){
-        switch (elegirOpcion()) {
+        switch (Utilidad.pedirOpcion()) {
             case 1 -> jugador.pedirCarta(baraja);
             case 2 -> jugador.bajarse();
             case 3 -> jugador.partirMano();
@@ -31,18 +31,7 @@ public class Juego {
         while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
     }
 
-    private int elegirOpcion() {
-        Scanner input = new Scanner(System.in);
-        int opcion = 0;
-        try{
-            mostrarMenu();
-            opcion = input.nextInt();
-        }catch (Exception e){
-            System.out.println("Por favor ingrese un numero que corresponda a una de las opciones");
-            input.next();
-        }
-        return opcion;
-    }
+
 
     public void mostrarMenu(){
         System.out.print("""
