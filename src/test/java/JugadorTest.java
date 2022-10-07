@@ -2,6 +2,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JugadorTest {
@@ -11,7 +13,7 @@ public class JugadorTest {
 
     @BeforeEach
     void init(){
-        jugador = new Jugador("Jorge", false, 25000);
+        jugador = new Jugador(false);
         baraja = new Baraja();
     }
 
@@ -44,9 +46,7 @@ public class JugadorTest {
     @Test
     void puntajeManoTest(){
         baraja.llenarBaraja();
-        for (int i = 0; i < 5; i++) {
-            jugador.pedirCarta(baraja);
-        }
+        IntStream.range(0, 5).forEach(index -> jugador.pedirCarta(baraja));
         assertEquals(jugador.puntajeMano(), 15);
     }
 }

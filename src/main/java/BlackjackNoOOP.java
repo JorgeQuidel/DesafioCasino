@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class Blackjack {
+public class BlackjackNoOOP {
     public static void main(String[] args) {
         jugar();
     }

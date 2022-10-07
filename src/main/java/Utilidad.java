@@ -1,29 +1,29 @@
-import java.util.stream.IntStream;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Utilidad {
 
-    public static boolean esMayorQue21(int numero){
-        return numero>21;
-    }
-
-    public static boolean esBlackjack(Mano mano){
-        if(mano.getCartas().size()>2){
-            return false;
+    public static int pedirOpcionEntera() {
+        try {
+            return pedirValorEntero();
+        } catch (InputMismatchException e) {
+            System.err.println("Por favor ingrese un numero entero");
+            return pedirOpcionEntera();
         }
-        return contieneAs(mano) && contieneValor10(mano);
+    }
+    public static int pedirValorEntero() throws InputMismatchException {
+        return new Scanner(System.in).nextInt();
     }
 
-    public static boolean contieneAs(Mano mano){
-        return IntStream.range(0, mano.getCartas().size())
-                .anyMatch(carta -> mano.getCartas().get(carta).getIndice().equals("A"));
+    public static String pedirString() {
+        return new Scanner(System.in).next();
+    }
+    public static String pedirStringEspecifico(String stringEsperado, String stringEsperado2) {
+        String resultante = "";
+        do{
+            resultante = pedirString();
+        }while(!resultante.equalsIgnoreCase(stringEsperado) && !resultante.equalsIgnoreCase(stringEsperado2));
+        return resultante;
     }
 
-    public static boolean contieneValor10(Mano mano){
-        return IntStream.range(0, mano.getCartas().size())
-                .anyMatch(carta -> mano.getCartas().get(carta).getValor() == 10);
-    }
-
-    public static boolean asNoVale11(Mano mano){
-        return esMayorQue21(mano.obtenerPuntaje()) && contieneAs(mano);
-    }
 }

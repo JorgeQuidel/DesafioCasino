@@ -1,20 +1,26 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Jugador {
     private String nombre;
     private boolean esDealer;
     private Mano mano;
+    private List<Mano> manos;
     private int apuesta;
     private int monto;
 
-    public Jugador(String nombre, boolean esDealer, int monto) {
-        this.nombre = nombre;
+    public Jugador(boolean esDealer) {
         this.esDealer = esDealer;
-        this.monto = monto;
         this.mano = new Mano();
     }
 
-    public void partirMano(){}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public void bajarse(){}
+    public void setMonto(int monto) {
+        this.monto = monto;
+    }
 
     public void iniciarMano(Baraja baraja) {
         for (int i = 0; i < 2; i++) pedirCarta(baraja);
@@ -26,7 +32,7 @@ public class Jugador {
 
     public int puntajeMano(){
         int puntaje = mano.obtenerPuntaje();
-        if(Utilidad.asNoVale11(mano)){
+        if(mano.asNoVale11()){
             puntaje -= 10;
         }
         return puntaje;
@@ -50,6 +56,10 @@ public class Jugador {
 
     public void mostrarMano(){
         System.out.println(nombre + ": " + mano);
+    }
+
+    public void mostrarManoOculta(){
+        System.out.println(nombre + ": [" + mano.getCartas().get(0) + ", ?" + "]");
     }
     @Override
     public String toString() {
