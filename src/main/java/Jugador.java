@@ -5,7 +5,7 @@ public class Jugador {
     private String nombre;
     private boolean esDealer;
     private Mano mano;
-    private List<Mano> dobleMano;
+    private List<Mano> manos;
     private int apuesta;
     private int monto;
 
@@ -40,10 +40,6 @@ public class Jugador {
 
     public String getNombre() {
         return nombre;
-    }
-
-    public boolean getEsDealer() {
-        return esDealer;
     }
 
     public Mano getMano() {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BlackjackTest {
+public class BlackjackNoOPPTest {
     private String[] manoJugador;
     private String[] manoDealer;
     private String[][] baraja;

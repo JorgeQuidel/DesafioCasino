@@ -13,7 +13,7 @@ public class JugadorTest {
 
     @BeforeEach
     void init(){
-        jugador = new Jugador("Jorge", false, 25000);
+        jugador = new Jugador(false);
         baraja = new Baraja();
     }
 
