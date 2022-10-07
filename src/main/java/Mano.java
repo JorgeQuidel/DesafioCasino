@@ -40,6 +40,10 @@ public class Mano {
         return esMayorQue21() && contieneAs();
     }
 
+    public void setCartas(List<Carta> cartas) {
+        this.cartas = cartas;
+    }
+
     public List<Carta> getCartas() {
         return cartas;
     }
