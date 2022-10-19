@@ -32,8 +32,11 @@ public class Jugador {
 
     public int puntajeMano(){
         int puntaje = mano.obtenerPuntaje();
-        if(mano.asNoVale11()){
-            puntaje -= 10;
+        List<Carta> cartas = mano.getCartas();
+        for (Carta carta : cartas) {
+            if(carta.esAs() && puntaje > 21){
+                puntaje -=10;
+            }
         }
         return puntaje;
     }

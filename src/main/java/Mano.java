@@ -29,7 +29,12 @@ public class Mano {
     }
 
     public boolean contieneAs(){
-        return cartas.stream().anyMatch(value -> value.getIndice().equals("A"));
+        for (Carta carta : cartas) {
+            if (carta.esAs()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean contieneValor10() {

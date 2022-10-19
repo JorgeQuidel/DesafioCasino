@@ -18,6 +18,10 @@ public class Carta {
         return indice;
     }
 
+    public boolean esAs(){
+        return indice.equals("A");
+    }
+
     @Override
     public String toString() {
         return indice + " " + pinta;
