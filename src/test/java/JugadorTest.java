@@ -21,14 +21,14 @@ public class JugadorTest {
     void pedirCartaTest() {
         baraja.llenarBaraja();
         jugador.pedirCarta(baraja);
-        assertEquals(jugador.getMano().getCartas().size(), 1);
+        assertEquals(jugador.getManoActual().getCartas().size(), 1);
     }
 
     @Test
     void iniciarManoTest() {
         baraja.llenarBaraja();
         jugador.iniciarMano(baraja);
-        assertEquals(jugador.getMano().getCartas().size(), 2);
+        assertEquals(jugador.getManoActual().getCartas().size(), 2);
     }
 
     @Test
@@ -48,5 +48,14 @@ public class JugadorTest {
         baraja.llenarBaraja();
         IntStream.range(0, 5).forEach(index -> jugador.pedirCarta(baraja));
         assertEquals(jugador.puntajeMano(), 15);
+    }
+
+    @Test
+    void puntajeManoTestVariosAs(){
+        jugador.getManoActual().añadirCarta(new Carta("A", "Trebol", 11));
+        jugador.getManoActual().añadirCarta(new Carta("A", "Diamante", 11));
+        jugador.getManoActual().añadirCarta(new Carta("A", "Corazon", 11));
+        jugador.getManoActual().añadirCarta(new Carta("A", "Espada", 11));
+        assertEquals(jugador.puntajeMano(), 14);
     }
 }
