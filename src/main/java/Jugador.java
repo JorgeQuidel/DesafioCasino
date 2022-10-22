@@ -67,6 +67,10 @@ public class Jugador {
         return apuesta;
     }
 
+    public int getMonto() {
+        return monto;
+    }
+
     public void setApuesta(int apuesta) {
         this.apuesta = apuesta;
     }
