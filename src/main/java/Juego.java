@@ -5,44 +5,64 @@ import java.util.stream.Collectors;
 
 public class Juego {
     private Baraja baraja;
-    private List<Jugador> jugadores;
+    private Jugador jugador;
     private Jugador dealer;
 
     public Juego() {
         this.baraja = new Baraja();
-        this.jugadores = new ArrayList<>();
+        this.jugador = new Jugador(false);
+        this.dealer = new Jugador(true);
     }
 
     public void jugar() {
         baraja.llenarBaraja();
         baraja.barajar();
 
-        inicializarDealer(baraja);
-        añadirJugadores(baraja);
+        inicializarDealer();
+        inicializarJugador();
+        //añadirJugadores(baraja);
 
-        if(jugadores.get(0).getMano().esBlackjack()) {
+        System.out.println("\nINICIA EL JUEGO\n");
+
+        if(jugador.getManoActual().esBlackjack()) {
             System.out.println("\nGANASTE!");
             return;
         }
-        turnoJugador(baraja, dealer, jugadores.get(0));
+        turnoJugador();
     }
 
-    private void inicializarDealer(Baraja baraja) {
-        dealer = new Jugador(true);
+    private void inicializarJugador() {
+        ingresarDatosJugador();
+        jugador.iniciarMano(baraja);
+    }
+
+    private void ingresarDatosJugador() {
+        System.out.print("Ingrese su nombre: ");
+        jugador.setNombre(Utilidad.pedirString());
+
+        System.out.print("Ingrese su monto: ");
+        jugador.setMonto(Utilidad.pedirOpcionEntera());
+
+        System.out.print("Ingrese su apuesta: ");
+        jugador.setApuesta(Utilidad.pedirOpcionEntera());
+
+    }
+
+    private void inicializarDealer() {
         dealer.setNombre("Dealer");
         dealer.setMonto(5000000);
         dealer.setApuesta(250000);
         dealer.iniciarMano(baraja);
     }
 
-    public void turnoJugador(Baraja baraja, Jugador dealer, Jugador jugador){
+    public void turnoJugador(){
         bucle:
         while (true){
 
             jugador.mostrarMano();
             dealer.mostrarManoOculta();
 
-            if (jugador.getMano().esMayorQue21()) {
+            if (jugador.getManoActual().esMayorQue21()) {
                 System.out.println("\nPERDISTE!");
                 break;
             }
@@ -52,7 +72,7 @@ public class Juego {
                 case 1 -> jugador.pedirCarta(baraja);
                 case 2 ->
                 {
-                    bajarse(jugador, dealer);
+                    bajarse();
                     break bucle;
                 }
                 case 3 -> System.out.println("No implementado todavia");
@@ -65,7 +85,7 @@ public class Juego {
         }
     }
 
-    private void añadirJugadores(Baraja baraja){
+    /*private void añadirJugadores(Baraja baraja){
         do {
             var jugador = new Jugador(false);
 
@@ -82,25 +102,25 @@ public class Juego {
             jugadores.add(jugador);
             System.out.println("Quiere agregar otro jugador? y/n");
         } while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
-    }
+    }*/
 
-    private void bajarse(Jugador jugador, Jugador dealer){
+    private void bajarse(){
         dealer.mostrarMano();
-        turnoDealer(baraja, dealer);
-        var ganador = verificarGanador(jugador, dealer);
-        mostrarResultados(jugador, dealer, ganador);
+        turnoDealer();
+        var ganador = verificarGanador();
+        mostrarResultados(ganador);
     }
 
-    public HashMap<String, Integer> obtenerPuntajes() {
+    /*public HashMap<String, Integer> obtenerPuntajes() {
         return jugadores.stream()
                 .collect(Collectors.toMap(Jugador::getNombre, Jugador::puntajeMano, (a, b) -> b, HashMap::new));
+    }*/
+
+    public void turnoDealer(){
+        while(dealer.getManoActual().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
     }
 
-    public void turnoDealer(Baraja baraja, Jugador dealer){
-        while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
-    }
-
-    public static Jugador verificarGanador(Jugador jugador, Jugador dealer) {
+    public Jugador verificarGanador() {
         int puntosJugador = jugador.puntajeMano();
         int puntosDealer = dealer.puntajeMano();
 
@@ -117,14 +137,19 @@ public class Juego {
         }
     }
 
-    public void mostrarResultados(Jugador jugador, Jugador dealer, Jugador ganador) {
+    public void mostrarResultados(Jugador ganador) {
         if(ganador == dealer){
             System.out.println("\nPERDISTE!");
         }else {
             System.out.println("\nGANASTE!");
         }
-        System.out.println("{Dealer=" + dealer.puntajeMano() + "}");
-        System.out.println(obtenerPuntajes());
+        mostrarPuntajes();
+        //System.out.println(obtenerPuntajes());
+    }
+
+    private void mostrarPuntajes(){
+        System.out.println("Puntaje Dealer = " + dealer.puntajeMano());
+        System.out.println("Puntaje " + jugador.getNombre() + " = "+ jugador.puntajeMano());
     }
 
     public void mostrarMenu(){

@@ -1,17 +1,16 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class Jugador {
     private String nombre;
     private boolean esDealer;
-    private Mano mano;
-    private List<Mano> manos;
+    private Mano manoActual;
+    //private List<Mano> manos;
     private int apuesta;
     private int monto;
 
     public Jugador(boolean esDealer) {
         this.esDealer = esDealer;
-        this.mano = new Mano();
+        this.manoActual = new Mano();
     }
 
     public void setNombre(String nombre) {
@@ -24,15 +23,30 @@ public class Jugador {
 
     public void iniciarMano(Baraja baraja) {
         for (int i = 0; i < 2; i++) pedirCarta(baraja);
+        //manos.add(manoActual);
     }
 
     public void pedirCarta(Baraja baraja){
-        mano.añadirCarta(baraja.sacarCarta());
+        manoActual.añadirCarta(baraja.sacarCarta());
     }
 
+    /*public void partirMano(){
+        Mano manoNueva = new Mano();
+        Mano manoAntigua = new Mano();
+
+        Carta cartaManoAntigua = manoActual.getCartas().get(0);
+        Carta cartaManoNueva = manoActual.getCartas().get(1);
+
+        manoAntigua.añadirCarta(cartaManoAntigua);
+        manoNueva.añadirCarta(cartaManoNueva);
+
+        manoActual = manoAntigua;
+        manos.add(manoNueva);
+    }*/
+
     public int puntajeMano(){
-        int puntaje = mano.obtenerPuntaje();
-        List<Carta> cartas = mano.getCartas();
+        int puntaje = manoActual.obtenerPuntaje();
+        List<Carta> cartas = manoActual.getCartas();
         for (Carta carta : cartas) {
             if(carta.esAs() && puntaje > 21){
                 puntaje -=10;
@@ -45,8 +59,8 @@ public class Jugador {
         return nombre;
     }
 
-    public Mano getMano() {
-        return mano;
+    public Mano getManoActual() {
+        return manoActual;
     }
 
     public int getApuesta() {
@@ -58,18 +72,18 @@ public class Jugador {
     }
 
     public void mostrarMano(){
-        System.out.println(nombre + ": " + mano);
+        System.out.println(nombre + ": " + manoActual);
     }
 
     public void mostrarManoOculta(){
-        System.out.println(nombre + ": [" + mano.getCartas().get(0) + ", ?" + "]");
+        System.out.println(nombre + ": [" + manoActual.getCartas().get(0) + ", ?" + "]");
     }
     @Override
     public String toString() {
         return "Jugador{" +
                 "nombre='" + nombre + '\'' +
                 ", esDealer=" + esDealer +
-                ", mano=" + mano +
+                ", mano=" + manoActual +
                 ", apuesta=" + apuesta +
                 ", monto=" + monto +
                 '}';
