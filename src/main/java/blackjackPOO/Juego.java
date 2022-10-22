@@ -71,7 +71,7 @@ public class Juego {
         while (true){
 
             jugador.mostrarMano();
-            dealer.mostrarManoOculta();
+            dealer.mostrarMano();
 
             if (jugador.getManoActual().esMayorQue21()) {
                 System.out.println("\nPERDISTE!");
@@ -116,6 +116,7 @@ public class Juego {
     }*/
 
     private void bajarse(){
+        dealer.getManoActual().getCartas().get(1).voltearCarta();
         dealer.mostrarMano();
         turnoDealer();
         var ganador = verificarGanador();

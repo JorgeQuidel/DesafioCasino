@@ -23,7 +23,9 @@ public class Jugador {
 
     public void iniciarMano(Baraja baraja) {
         for (int i = 0; i < 2; i++) pedirCarta(baraja);
-        //manos.add(manoActual);
+        if(esDealer){
+            manoActual.getCartas().get(1).voltearCarta();
+        }
     }
 
     public void pedirCarta(Baraja baraja){
@@ -79,12 +81,9 @@ public class Jugador {
         System.out.println(nombre + ": " + manoActual);
     }
 
-    public void mostrarManoOculta(){
-        System.out.println(nombre + ": [" + manoActual.getCartas().get(0) + ", ?" + "]");
-    }
     @Override
     public String toString() {
-        return "Jugador{" +
+        return "BlackjackPOO.Jugador{" +
                 "nombre='" + nombre + '\'' +
                 ", esDealer=" + esDealer +
                 ", mano=" + manoActual +
