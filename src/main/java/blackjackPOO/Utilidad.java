@@ -38,12 +38,5 @@ public class Utilidad {
     public static String pedirString() {
         return new Scanner(System.in).next();
     }
-    public static String pedirStringEspecifico(String stringEsperado, String stringEsperado2) {
-        String resultante = "";
-        do{
-            resultante = pedirString();
-        }while(!resultante.equalsIgnoreCase(stringEsperado) && !resultante.equalsIgnoreCase(stringEsperado2));
-        return resultante;
-    }
 
 }
