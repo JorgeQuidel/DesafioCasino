@@ -5,6 +5,24 @@ import java.util.Scanner;
 
 public class Utilidad {
 
+    public static int pedirOpcionMenorA(int base){
+        int valor = pedirOpcionEntera();
+        if(valor > base){
+            System.err.println("Por favor ingrese un numero menor a " + base);
+            return pedirOpcionMenorA(base);
+        }else {
+            return valor;
+        }
+    }
+    public static int pedirOpcionEnteraPositiva(){
+        int valor = pedirOpcionEntera();
+        if (valor <= 0) {
+            System.err.println("Por favor ingrese un numero mayor a 0");
+            return pedirOpcionEnteraPositiva();
+        }else{
+            return valor;
+        }
+    }
     public static int pedirOpcionEntera() {
         try {
             return pedirValorEntero();

@@ -34,26 +34,23 @@ public class Juego {
     }
 
     private void ingresarDatosJugador() {
+        ingresarNombre();
+        ingresarMonto();
+        ingresarApuesta();
+    }
+    private void ingresarNombre(){
         System.out.print("Ingrese su nombre: ");
         jugador.setNombre(Utilidad.pedirString());
+    }
 
+    private void ingresarMonto(){
         System.out.print("Ingrese su monto: ");
-        jugador.setMonto(Utilidad.pedirOpcionEntera());
-
-        ingresarApuesta();
-
+        jugador.setMonto(Utilidad.pedirOpcionEnteraPositiva());
     }
 
     private void ingresarApuesta(){
         System.out.print("Ingrese su apuesta: ");
-        int apuesta = Utilidad.pedirOpcionEntera();
-
-        if(apuesta <= jugador.getMonto()){
-            jugador.setApuesta(apuesta);
-        }else {
-            System.err.println("\nLa apuesta supera su monto, por favor ingrese una cantidad menor");
-            ingresarApuesta();
-        }
+        jugador.setApuesta(Utilidad.pedirOpcionMenorA(jugador.getMonto()));
     }
 
     private void inicializarDealer() {
