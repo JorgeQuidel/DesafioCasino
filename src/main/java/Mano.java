@@ -29,20 +29,11 @@ public class Mano {
     }
 
     public boolean contieneAs(){
-        for (Carta carta : cartas) {
-            if (carta.esAs()) {
-                return true;
-            }
-        }
-        return false;
+        return cartas.stream().anyMatch(Carta::esAs);
     }
 
     public boolean contieneValor10() {
         return cartas.stream().anyMatch(value -> value.getValor() == 10);
-    }
-
-    public boolean asNoVale11(){
-        return esMayorQue21() && contieneAs();
     }
 
     public void setCartas(List<Carta> cartas) {

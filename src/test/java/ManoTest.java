@@ -70,20 +70,4 @@ public class ManoTest {
         mano.añadirCarta(new Carta("J", "Trebol", 10));
         assertFalse(mano.esMayorQue21());
     }
-
-    @Test
-    void asNoVale11TestCasoTrue(){
-        mano.añadirCarta(new Carta("8", "Diamante", 8));
-        mano.añadirCarta(new Carta("A", "Trebol", 11));
-        mano.añadirCarta(new Carta("10", "Corazon", 10));
-        assertTrue(mano.asNoVale11());
-    }
-
-    @Test
-    void asNoVale11TestCasoFalse(){
-        mano.añadirCarta(new Carta("8", "Diamante", 8));
-        mano.añadirCarta(new Carta("A", "Trebol", 11));
-        assertFalse(mano.asNoVale11());
-    }
-
 }
