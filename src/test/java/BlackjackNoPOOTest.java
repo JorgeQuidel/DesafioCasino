@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BlackjackNoOPPTest {
+public class BlackjackNoPOOTest {
     private String[] manoJugador;
     private String[] manoDealer;
     private String[][] baraja;
