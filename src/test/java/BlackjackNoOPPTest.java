@@ -1,3 +1,4 @@
+import blackjackNoPOO.Blackjack;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ public class BlackjackNoOPPTest {
     public void verificarGanadorTestJugadorGana(){
         manoJugador = new String[] {"Diamante 2", "Corazon 3", "Corazon A"};
         manoDealer = new String[] {"Trebol K", "Espada 10", "Corazon 8"};
-        String[] manoGanadora = BlackjackNoOOP.verificarGanador(manoJugador, manoDealer);
+        String[] manoGanadora = Blackjack.verificarGanador(manoJugador, manoDealer);
         assertEquals(manoJugador, manoGanadora);
     }
 
@@ -25,7 +26,7 @@ public class BlackjackNoOPPTest {
         var logger = Logger.getLogger("Blackjack.clas");
         var manoDealer = new String[] {"Trebol 2", "Espada 10", "Corazon 4", "Trebol 4"};
         assertThrows(NullPointerException.class, () ->
-                BlackjackNoOOP.verificarGanador(null, manoDealer), "Se ha ingresado una entrada nula");
+                Blackjack.verificarGanador(null, manoDealer), "Se ha ingresado una entrada nula");
         logger.info("Se ha lanzado la excepcion NullPointerException, dado que la mano del jugador estaba nula");
     }
 
@@ -33,19 +34,19 @@ public class BlackjackNoOPPTest {
     @DisplayName("Prueba unitaria metodo pedirCarta para caso normal")
     public void pedirCartaTestCasoNormal(){
         manoJugador = new String[] {"Diamante 2", "Corazon Q", null};
-        baraja = BlackjackNoOOP.crearBaraja();
+        baraja = Blackjack.crearBaraja();
         String[] manoEsperada = {"Diamante 2", "Corazon Q", "Corazon A"};
-        BlackjackNoOOP.pedirCarta(baraja, manoJugador);
+        Blackjack.pedirCarta(baraja, manoJugador);
         assertArrayEquals(manoJugador, manoEsperada);
     }
 
     @Test
     @DisplayName("Prueba unitaria metodo pedirCarta para caso baraja vacia")
     public void pedirCartaTestManoNula(){
-        baraja = BlackjackNoOOP.crearBaraja();
+        baraja = Blackjack.crearBaraja();
         var logger = Logger.getLogger("Blackjack.clas");
         assertThrows(NullPointerException.class, () ->
-                BlackjackNoOOP.pedirCarta(baraja, null), "Se ha ingresado una entrada nula");
+                Blackjack.pedirCarta(baraja, null), "Se ha ingresado una entrada nula");
         logger.info("Se ha lanzado la excepcion NullPointerException, dado que la mano entregada estaba nula");
     }
 
@@ -54,9 +55,9 @@ public class BlackjackNoOPPTest {
     public void bajarseCasoNormal(){
         manoDealer = new String[] {"Trebol 10", "Espada 6", null};
         manoJugador = new String[] {"Diamante 10", "Corazon Q"};
-        baraja = BlackjackNoOOP.crearBaraja();
+        baraja = Blackjack.crearBaraja();
         String[] manoEsperada = {"Trebol 10", "Espada 6", "Corazon A"};
-        BlackjackNoOOP.bajarse(baraja, manoJugador, manoDealer);
+        Blackjack.bajarse(baraja, manoJugador, manoDealer);
         assertArrayEquals(manoDealer, manoEsperada);
     }
 
@@ -64,7 +65,7 @@ public class BlackjackNoOPPTest {
     @DisplayName("Prueba unitaria metodo cartasSonIguales")
     public void cartasSonIgualesTest(){
         manoJugador = new String[] {"Corazon 10", "Diamante K"};
-        assertTrue(BlackjackNoOOP.cartasMismoValor(manoJugador));
+        assertTrue(Blackjack.cartasMismoValor(manoJugador));
     }
 
     @Test
@@ -74,14 +75,14 @@ public class BlackjackNoOPPTest {
         String[][] manoEsperada = new String[2][12];
         manoEsperada[0][0] = manoJugador[0];
         manoEsperada[1][0] = manoJugador[1];
-        assertArrayEquals(BlackjackNoOOP.partirMano(manoJugador), manoEsperada);
+        assertArrayEquals(Blackjack.partirMano(manoJugador), manoEsperada);
     }
 
     @Test
     @DisplayName("Prueba unitaria metodo partirMano")
     public void partirManoTestCasoNulo(){
         assertThrows(NullPointerException.class, () ->
-                BlackjackNoOOP.partirMano(null), "Se ha ingresado una entrada nula");
+                Blackjack.partirMano(null), "Se ha ingresado una entrada nula");
     }
 
     @Test
@@ -90,7 +91,7 @@ public class BlackjackNoOPPTest {
         manoJugador = new String[] {"Diamante 4", "Corazon 3", "Corazon A"};
         manoJugador2 = new String[] {"Diamante 2", "Corazon 3", "Corazon A"};
         manoDealer = new String[] {"Trebol 3", "Espada 10", "Corazon 3"};
-        String[] manoGanadora = BlackjackNoOOP.verificarGanadorDobleMano(manoJugador, manoJugador2, manoDealer);
+        String[] manoGanadora = Blackjack.verificarGanadorDobleMano(manoJugador, manoJugador2, manoDealer);
         assertEquals(manoJugador, manoGanadora);
     }
 }

@@ -1,3 +1,6 @@
+import blackjackPOO.Baraja;
+import blackjackPOO.Carta;
+import blackjackPOO.Jugador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

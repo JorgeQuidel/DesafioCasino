@@ -1,3 +1,5 @@
+package blackjackPOO;
+
 public class Carta {
     private String indice;
     private String pinta;

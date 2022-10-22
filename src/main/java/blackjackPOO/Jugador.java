@@ -1,3 +1,5 @@
+package blackjackPOO;
+
 import java.util.List;
 
 public class Jugador {
@@ -33,11 +35,11 @@ public class Jugador {
     }
 
     /*public void partirMano(){
-        Mano manoNueva = new Mano();
-        Mano manoAntigua = new Mano();
+        BlackjackPOO.Mano manoNueva = new BlackjackPOO.Mano();
+        BlackjackPOO.Mano manoAntigua = new BlackjackPOO.Mano();
 
-        Carta cartaManoAntigua = manoActual.getCartas().get(0);
-        Carta cartaManoNueva = manoActual.getCartas().get(1);
+        BlackjackPOO.Carta cartaManoAntigua = manoActual.getCartas().get(0);
+        BlackjackPOO.Carta cartaManoNueva = manoActual.getCartas().get(1);
 
         manoAntigua.añadirCarta(cartaManoAntigua);
         manoNueva.añadirCarta(cartaManoNueva);

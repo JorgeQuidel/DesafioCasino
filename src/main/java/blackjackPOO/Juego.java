@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+package blackjackPOO;
 
 public class Juego {
     private Baraja baraja;
@@ -54,7 +51,7 @@ public class Juego {
         if(apuesta <= jugador.getMonto()){
             jugador.setApuesta(apuesta);
         }else {
-            System.err.println("La apuesta supera su monto, por favor ingrese una cantidad menor");
+            System.err.println("\nLa apuesta supera su monto, por favor ingrese una cantidad menor");
             ingresarApuesta();
         }
     }
@@ -96,23 +93,23 @@ public class Juego {
         }
     }
 
-    /*private void añadirJugadores(Baraja baraja){
+    /*private void añadirJugadores(BlackjackPOO.Baraja baraja){
         do {
-            var jugador = new Jugador(false);
+            var jugador = new BlackjackPOO.Jugador(false);
 
             System.out.print("Ingrese su nombre: ");
-            jugador.setNombre(Utilidad.pedirString());
+            jugador.setNombre(BlackjackPOO.Utilidad.pedirString());
 
             System.out.print("Ingrese su monto: ");
-            jugador.setMonto(Utilidad.pedirOpcionEntera());
+            jugador.setMonto(BlackjackPOO.Utilidad.pedirOpcionEntera());
 
             System.out.print("Ingrese su apuesta: ");
-            jugador.setApuesta(Utilidad.pedirOpcionEntera());
+            jugador.setApuesta(BlackjackPOO.Utilidad.pedirOpcionEntera());
 
             jugador.iniciarMano(baraja);
             jugadores.add(jugador);
             System.out.println("Quiere agregar otro jugador? y/n");
-        } while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
+        } while (BlackjackPOO.Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
     }*/
 
     private void bajarse(){
@@ -125,7 +122,7 @@ public class Juego {
 
     /*public HashMap<String, Integer> obtenerPuntajes() {
         return jugadores.stream()
-                .collect(Collectors.toMap(Jugador::getNombre, Jugador::puntajeMano, (a, b) -> b, HashMap::new));
+                .collect(Collectors.toMap(BlackjackPOO.Jugador::getNombre, BlackjackPOO.Jugador::puntajeMano, (a, b) -> b, HashMap::new));
     }*/
 
     public void turnoDealer(){
