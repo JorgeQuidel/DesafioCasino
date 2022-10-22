@@ -1,25 +1,23 @@
 package blackjackPOO;
 
 public class Carta {
-    private String indice;
-    private String pinta;
-    private int valor;
+    private Indice indice;
+    private Pinta pinta;
     private boolean estaBocaArriba;
 
 
-    public Carta(String indice, String pinta, int valor) {
+    public Carta(Indice indice, Pinta pinta) {
         this.indice = indice;
         this.pinta = pinta;
-        this.valor = valor;
         this.estaBocaArriba = true;
     }
 
     public int getValor() {
-        return valor;
+        return indice.getValorIndice();
     }
 
     public String getIndice() {
-        return indice;
+        return indice.getStringIndice();
     }
 
     public void voltearCarta(){
@@ -27,13 +25,13 @@ public class Carta {
     }
 
     public boolean esAs(){
-        return indice.equals("A");
+        return indice.getStringIndice().equals("A");
     }
 
     @Override
     public String toString() {
         if(estaBocaArriba){
-            return indice + " " + pinta;
+            return indice.getStringIndice() + " " + pinta.getPintaElegida();
         }else {
             return "?";
         }
