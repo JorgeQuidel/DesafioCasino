@@ -10,7 +10,7 @@ public class Mano {
         this.cartas = new ArrayList<>();
     }
 
-    public void añadirCarta(Carta nuevaCarta){
+    public void addCarta(Carta nuevaCarta){
         cartas.add(nuevaCarta);
     }
 
@@ -35,10 +35,6 @@ public class Mano {
 
     public boolean contieneValor10() {
         return cartas.stream().anyMatch(value -> value.getValor() == 10);
-    }
-
-    public void setCartas(List<Carta> cartas) {
-        this.cartas = cartas;
     }
 
     public List<Carta> getCartas() {

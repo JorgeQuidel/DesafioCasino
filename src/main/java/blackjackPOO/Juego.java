@@ -21,7 +21,7 @@ public class Juego {
 
         System.out.println("\nINICIA EL JUEGO\n");
 
-        if(jugador.getManoActual().esBlackjack()) {
+        if(jugador.getMano().esBlackjack()) {
             System.out.println("\nGANASTE!");
             return;
         }
@@ -60,14 +60,14 @@ public class Juego {
         dealer.iniciarMano(baraja);
     }
 
-    public void turnoJugador(){
+    private void turnoJugador(){
         bucle:
         while (true){
 
             jugador.mostrarMano();
             dealer.mostrarMano();
 
-            if (jugador.getManoActual().esMayorQue21()) {
+            if (jugador.getMano().esMayorQue21()) {
                 System.out.println("\nPERDISTE!");
                 break;
             }
@@ -110,7 +110,7 @@ public class Juego {
     }*/
 
     private void bajarse(){
-        dealer.getManoActual().getCartas().get(1).voltearCarta();
+        dealer.getMano().getCartas().get(1).voltearCarta();
         dealer.mostrarMano();
         turnoDealer();
         var ganador = verificarGanador();
@@ -123,12 +123,12 @@ public class Juego {
     }*/
 
     public void turnoDealer(){
-        while(dealer.getManoActual().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
+        while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
     }
 
-    public Jugador verificarGanador() {
-        int puntosJugador = jugador.puntajeMano();
-        int puntosDealer = dealer.puntajeMano();
+    private Jugador verificarGanador() {
+        int puntosJugador = jugador.obtenerPuntajeMano();
+        int puntosDealer = dealer.obtenerPuntajeMano();
 
         if(puntosDealer>21){
             return jugador;
@@ -143,7 +143,7 @@ public class Juego {
         }
     }
 
-    public void mostrarResultados(Jugador ganador) {
+    private void mostrarResultados(Jugador ganador) {
         if(ganador == dealer){
             System.out.println("\nPERDISTE!");
         }else {
@@ -154,11 +154,11 @@ public class Juego {
     }
 
     private void mostrarPuntajes(){
-        System.out.println("Puntaje Dealer = " + dealer.puntajeMano());
-        System.out.println("Puntaje " + jugador.getNombre() + " = "+ jugador.puntajeMano());
+        System.out.println("Puntaje Dealer = " + dealer.obtenerPuntajeMano());
+        System.out.println("Puntaje " + jugador.getNombre() + " = "+ jugador.obtenerPuntajeMano());
     }
 
-    public void mostrarMenu(){
+    private void mostrarMenu(){
         System.out.print("""
                 [1].Pedir Carta
                 [2].Bajarte

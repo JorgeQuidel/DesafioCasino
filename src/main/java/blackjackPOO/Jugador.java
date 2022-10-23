@@ -5,14 +5,14 @@ import java.util.List;
 public class Jugador {
     private String nombre;
     private boolean esDealer;
-    private Mano manoActual;
+    private Mano mano;
     //private List<Mano> manos;
     private int apuesta;
     private int monto;
 
     public Jugador(boolean esDealer) {
         this.esDealer = esDealer;
-        this.manoActual = new Mano();
+        this.mano = new Mano();
     }
 
     public void setNombre(String nombre) {
@@ -26,12 +26,12 @@ public class Jugador {
     public void iniciarMano(Baraja baraja) {
         for (int i = 0; i < 2; i++) pedirCarta(baraja);
         if(esDealer){
-            manoActual.getCartas().get(1).voltearCarta();
+            mano.getCartas().get(1).voltearCarta();
         }
     }
 
     public void pedirCarta(Baraja baraja){
-        manoActual.añadirCarta(baraja.sacarCarta());
+        mano.addCarta(baraja.sacarCarta());
     }
 
     /*public void partirMano(){
@@ -48,9 +48,9 @@ public class Jugador {
         manos.add(manoNueva);
     }*/
 
-    public int puntajeMano(){
-        int puntaje = manoActual.obtenerPuntaje();
-        List<Carta> cartas = manoActual.getCartas();
+    public int obtenerPuntajeMano(){
+        int puntaje = mano.obtenerPuntaje();
+        List<Carta> cartas = mano.getCartas();
         for (Carta carta : cartas) {
             if(carta.esAs() && puntaje > 21){
                 puntaje -=10;
@@ -63,8 +63,8 @@ public class Jugador {
         return nombre;
     }
 
-    public Mano getManoActual() {
-        return manoActual;
+    public Mano getMano() {
+        return mano;
     }
 
     public int getApuesta() {
@@ -80,7 +80,7 @@ public class Jugador {
     }
 
     public void mostrarMano(){
-        System.out.println(nombre + ": " + manoActual);
+        System.out.println(nombre + ": " + mano);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Jugador {
         return "BlackjackPOO.Jugador{" +
                 "nombre='" + nombre + '\'' +
                 ", esDealer=" + esDealer +
-                ", mano=" + manoActual +
+                ", mano=" + mano +
                 ", apuesta=" + apuesta +
                 ", monto=" + monto +
                 '}';

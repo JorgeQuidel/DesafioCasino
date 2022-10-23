@@ -20,14 +20,14 @@ public class JugadorTest {
     void pedirCartaTest() {
         baraja.llenarBaraja();
         jugador.pedirCarta(baraja);
-        assertEquals(jugador.getManoActual().getCartas().size(), 1);
+        assertEquals(jugador.getMano().getCartas().size(), 1);
     }
 
     @Test
     void iniciarManoTest() {
         baraja.llenarBaraja();
         jugador.iniciarMano(baraja);
-        assertEquals(jugador.getManoActual().getCartas().size(), 2);
+        assertEquals(jugador.getMano().getCartas().size(), 2);
     }
 
     @Test
@@ -44,18 +44,18 @@ public class JugadorTest {
 
     @Test
     void puntajeManoTest(){
-        jugador.getManoActual().añadirCarta(new Carta(Indice.AS, Pinta.TREBOL));
-        jugador.getManoActual().añadirCarta(new Carta(Indice.KAISER, Pinta.CORAZON));
-        jugador.getManoActual().añadirCarta(new Carta(Indice.CUATRO, Pinta.DIAMANTE));
-        assertEquals(jugador.puntajeMano(), 15);
+        jugador.getMano().addCarta(new Carta(Indice.AS, Pinta.TREBOL));
+        jugador.getMano().addCarta(new Carta(Indice.KAISER, Pinta.CORAZON));
+        jugador.getMano().addCarta(new Carta(Indice.CUATRO, Pinta.DIAMANTE));
+        assertEquals(jugador.obtenerPuntajeMano(), 15);
     }
 
     @Test
     void puntajeManoTestVariosAs(){
-        jugador.getManoActual().añadirCarta(new Carta(Indice.AS, Pinta.TREBOL));
-        jugador.getManoActual().añadirCarta(new Carta(Indice.AS, Pinta.CORAZON));
-        jugador.getManoActual().añadirCarta(new Carta(Indice.AS, Pinta.DIAMANTE));
-        jugador.getManoActual().añadirCarta(new Carta(Indice.AS, Pinta.ESPADA));
-        assertEquals(jugador.puntajeMano(), 14);
+        jugador.getMano().addCarta(new Carta(Indice.AS, Pinta.TREBOL));
+        jugador.getMano().addCarta(new Carta(Indice.AS, Pinta.CORAZON));
+        jugador.getMano().addCarta(new Carta(Indice.AS, Pinta.DIAMANTE));
+        jugador.getMano().addCarta(new Carta(Indice.AS, Pinta.ESPADA));
+        assertEquals(jugador.obtenerPuntajeMano(), 14);
     }
 }

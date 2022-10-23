@@ -25,7 +25,7 @@ public class Carta {
     }
 
     public boolean esAs(){
-        return indice.getStringIndice().equals("A");
+        return getIndice().equals("A");
     }
 
     @Override
