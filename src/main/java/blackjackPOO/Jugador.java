@@ -1,11 +1,12 @@
-import java.util.ArrayList;
+package blackjackPOO;
+
 import java.util.List;
 
 public class Jugador {
     private String nombre;
     private boolean esDealer;
     private Mano mano;
-    private List<Mano> manos;
+    //private List<Mano> manos;
     private int apuesta;
     private int monto;
 
@@ -24,16 +25,36 @@ public class Jugador {
 
     public void iniciarMano(Baraja baraja) {
         for (int i = 0; i < 2; i++) pedirCarta(baraja);
+        if(esDealer){
+            mano.getCartas().get(1).voltearCarta();
+        }
     }
 
     public void pedirCarta(Baraja baraja){
-        mano.añadirCarta(baraja.sacarCarta());
+        mano.addCarta(baraja.sacarCarta());
     }
 
-    public int puntajeMano(){
+    /*public void partirMano(){
+        BlackjackPOO.Mano manoNueva = new BlackjackPOO.Mano();
+        BlackjackPOO.Mano manoAntigua = new BlackjackPOO.Mano();
+
+        BlackjackPOO.Carta cartaManoAntigua = manoActual.getCartas().get(0);
+        BlackjackPOO.Carta cartaManoNueva = manoActual.getCartas().get(1);
+
+        manoAntigua.añadirCarta(cartaManoAntigua);
+        manoNueva.añadirCarta(cartaManoNueva);
+
+        manoActual = manoAntigua;
+        manos.add(manoNueva);
+    }*/
+
+    public int obtenerPuntajeMano(){
         int puntaje = mano.obtenerPuntaje();
-        if(mano.asNoVale11()){
-            puntaje -= 10;
+        List<Carta> cartas = mano.getCartas();
+        for (Carta carta : cartas) {
+            if(carta.esAs() && puntaje > 21){
+                puntaje -=10;
+            }
         }
         return puntaje;
     }
@@ -50,6 +71,10 @@ public class Jugador {
         return apuesta;
     }
 
+    public int getMonto() {
+        return monto;
+    }
+
     public void setApuesta(int apuesta) {
         this.apuesta = apuesta;
     }
@@ -58,12 +83,9 @@ public class Jugador {
         System.out.println(nombre + ": " + mano);
     }
 
-    public void mostrarManoOculta(){
-        System.out.println(nombre + ": [" + mano.getCartas().get(0) + ", ?" + "]");
-    }
     @Override
     public String toString() {
-        return "Jugador{" +
+        return "BlackjackPOO.Jugador{" +
                 "nombre='" + nombre + '\'' +
                 ", esDealer=" + esDealer +
                 ", mano=" + mano +

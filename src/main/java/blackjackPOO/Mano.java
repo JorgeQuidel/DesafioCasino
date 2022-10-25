@@ -1,6 +1,7 @@
+package blackjackPOO;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Mano {
     private List<Carta> cartas;
@@ -9,7 +10,7 @@ public class Mano {
         this.cartas = new ArrayList<>();
     }
 
-    public void añadirCarta(Carta nuevaCarta){
+    public void addCarta(Carta nuevaCarta){
         cartas.add(nuevaCarta);
     }
 
@@ -29,19 +30,11 @@ public class Mano {
     }
 
     public boolean contieneAs(){
-        return cartas.stream().anyMatch(value -> value.getIndice().equals("A"));
+        return cartas.stream().anyMatch(Carta::esAs);
     }
 
     public boolean contieneValor10() {
         return cartas.stream().anyMatch(value -> value.getValor() == 10);
-    }
-
-    public boolean asNoVale11(){
-        return esMayorQue21() && contieneAs();
-    }
-
-    public void setCartas(List<Carta> cartas) {
-        this.cartas = cartas;
     }
 
     public List<Carta> getCartas() {

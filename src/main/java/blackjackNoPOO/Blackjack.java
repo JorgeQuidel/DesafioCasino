@@ -1,5 +1,7 @@
+package blackjackNoPOO;
+
 import java.util.Scanner;
-public class BlackjackNoOOP {
+public class Blackjack {
     public static void main(String[] args) {
         jugar();
     }
@@ -120,9 +122,9 @@ public class BlackjackNoOOP {
         mostrarManoDealer(manoDealer);
         System.out.println("Puntos Dealer = " + puntosDealer);
         mostrarManoJugador(manoJugador1);
-        System.out.println("Puntos Jugador Mano 1 = " + puntosJugadorMano1);
+        System.out.println("Puntos BlackjackPOO.Jugador BlackjackPOO.Mano 1 = " + puntosJugadorMano1);
         mostrarManoJugador(manoJugador2);
-        System.out.println("Puntos Jugador Mano 2 = " + puntosJugadorMano2);
+        System.out.println("Puntos BlackjackPOO.Jugador BlackjackPOO.Mano 2 = " + puntosJugadorMano2);
 
     }
 
@@ -325,15 +327,15 @@ public class BlackjackNoOOP {
         return cantidadCartas;
     }
     public static void mostrarMenuDobleMano() {
-        System.out.println("[1].Pedir Carta Mano 1");
-        System.out.println("[2].Pedir Carta Mano 2");
+        System.out.println("[1].Pedir BlackjackPOO.Carta BlackjackPOO.Mano 1");
+        System.out.println("[2].Pedir BlackjackPOO.Carta BlackjackPOO.Mano 2");
         System.out.println("[3].Bajarte");
         System.out.println("[4].Salir del juego");
     }
     public static void mostrarMenu() {
-        System.out.println("[1].Pedir Carta");
+        System.out.println("[1].Pedir BlackjackPOO.Carta");
         System.out.println("[2].Bajarte");
-        System.out.println("[3].Partir Mano");
+        System.out.println("[3].Partir BlackjackPOO.Mano");
         System.out.println("[4].Salir del juego");
     }
 
@@ -363,7 +365,7 @@ public class BlackjackNoOOP {
     }
     public static void mostrarManoJugador(String[] mano){
         int cantidadCartas = contarCartas(mano);
-        System.out.print("Mano Jugador = ");
+        System.out.print("BlackjackPOO.Mano BlackjackPOO.Jugador = ");
         for (int i = 0; i < cantidadCartas; i++) {
             System.out.print("["+mano[i]+"]");
         }
@@ -371,14 +373,14 @@ public class BlackjackNoOOP {
     }
     public static void mostrarManoDealer(String[] mano){
         int cantidadCartas = contarCartas(mano);
-        System.out.print("Mano Dealer = ");
+        System.out.print("BlackjackPOO.Mano Dealer = ");
         for (int i = 0; i < cantidadCartas; i++) {
             System.out.print("["+mano[i]+"]");
         }
         System.out.println();
     }
     public static void mostrarManoOcultaDealer(String[] manoDealer){
-        System.out.println("Mano Dealer = ["+ manoDealer[0] + ", ?]");
+        System.out.println("BlackjackPOO.Mano Dealer = ["+ manoDealer[0] + ", ?]");
     }
     public static void mostrarResultados(String[] manoJugador, String[] manoDealer, String[] manoGanadora) {
         int puntosJugador = sumarPuntosMano(manoJugador);
@@ -393,7 +395,7 @@ public class BlackjackNoOOP {
         mostrarManoDealer(manoDealer);
         System.out.println("Puntos Dealer = " + puntosDealer);
         mostrarManoJugador(manoJugador);
-        System.out.println("Puntos Jugador = " + puntosJugador);
+        System.out.println("Puntos BlackjackPOO.Jugador = " + puntosJugador);
     }
 
 }
