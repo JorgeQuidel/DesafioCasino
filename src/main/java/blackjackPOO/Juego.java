@@ -14,17 +14,13 @@ public class Juego {
     public void jugar() {
         baraja.llenarBaraja();
         baraja.barajar();
-
         inicializarDealer();
         inicializarJugador();
         //añadirJugadores(baraja);
 
         System.out.println("\nINICIA EL JUEGO\n");
 
-        if(jugador.getMano().esBlackjack()) {
-            System.out.println("\nGANASTE!");
-            return;
-        }
+        if(jugador.getMano().esBlackjack()) {System.out.println("\nGANASTE!"); return;}
         turnoJugador();
     }
 
@@ -40,7 +36,7 @@ public class Juego {
     }
     private void ingresarNombre(){
         System.out.print("Ingrese su nombre: ");
-        jugador.setNombre(Utilidad.pedirString());
+        jugador.setNombre(Utilidad.pedirStringNoVacio());
     }
 
     private void ingresarMonto(){
@@ -63,28 +59,17 @@ public class Juego {
     private void turnoJugador(){
         bucle:
         while (true){
-
             jugador.mostrarMano();
             dealer.mostrarMano();
 
-            if (jugador.getMano().esMayorQue21()) {
-                System.out.println("\nPERDISTE!");
-                break;
-            }
+            if (jugador.getMano().esMayorQue21()) {System.out.println("\nPERDISTE!"); break;}
 
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
                 case 1 -> jugador.pedirCarta(baraja);
-                case 2 ->
-                {
-                    bajarse();
-                    break bucle;
-                }
+                case 2 -> {bajarse(); break bucle;}
                 case 3 -> System.out.println("No implementado todavia");
-                case 4 -> {
-                    System.out.println("Hasta pronto");
-                    break bucle;
-                }
+                case 4 -> {System.out.println("Hasta pronto"); break bucle;}
                 default -> System.out.println("Por favor, ingrese una de las opciones");
             }
         }

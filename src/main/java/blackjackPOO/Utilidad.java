@@ -8,12 +8,13 @@ public class Utilidad {
     public static int pedirOpcionMenorA(int base){
         int valor = pedirOpcionEntera();
         if(valor > base){
-            System.err.println("Por favor ingrese un numero menor a " + base);
+            System.err.println("Por favor ingrese un numero menor o igual a " + base);
             return pedirOpcionMenorA(base);
         }else {
             return valor;
         }
     }
+
     public static int pedirOpcionEnteraPositiva(){
         int valor = pedirOpcionEntera();
         if (valor <= 0) {
@@ -23,6 +24,7 @@ public class Utilidad {
             return valor;
         }
     }
+
     public static int pedirOpcionEntera() {
         try {
             return pedirValorEntero();
@@ -31,12 +33,22 @@ public class Utilidad {
             return pedirOpcionEntera();
         }
     }
+
     public static int pedirValorEntero() throws InputMismatchException {
         return new Scanner(System.in).nextInt();
     }
 
-    public static String pedirString() {
-        return new Scanner(System.in).next();
+    public static String pedirStringNoVacio() {
+        String texto = pedirString();
+        if(texto.isBlank()){
+            System.err.println("La entrada ingresada se encuentra vacia, intente nuevamente");
+            return pedirStringNoVacio();
+        }else {
+            return texto;
+        }
     }
 
+    public static String pedirString() {
+        return new Scanner(System.in).nextLine();
+    }
 }
