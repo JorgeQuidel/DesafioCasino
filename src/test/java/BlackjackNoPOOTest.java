@@ -44,10 +44,11 @@ public class BlackjackNoPOOTest {
     @DisplayName("Prueba unitaria metodo pedirCarta para caso baraja vacia")
     public void pedirCartaTestManoNula(){
         baraja = Blackjack.crearBaraja();
-        var logger = Logger.getLogger("Blackjack.clas");
-        assertThrows(NullPointerException.class, () ->
+        var logger = Logger.getLogger("blackjackNoPOO/Blackjack.class");
+        var exception = assertThrows(NullPointerException.class, () ->
                 Blackjack.pedirCarta(baraja, null), "Se ha ingresado una entrada nula");
-        logger.info("Se ha lanzado la excepcion NullPointerException, dado que la mano entregada estaba nula");
+        logger.info("Se ha lanzado la excepcion NullPointerException, dado que la mano entregada estaba nula" +
+                exception.getMessage());
     }
 
     @Test
