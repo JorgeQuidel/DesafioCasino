@@ -1,6 +1,8 @@
 package blackjackPOO;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -18,8 +20,9 @@ public class Juego {
     public void jugar() {
         iniciarBaraja();
         crearDealer();
-        añadirJugadores();
+        ingresarJugadores();
         iniciarPartida();
+        mostrarResultadosFinales();
     }
 
     private void iniciarBaraja() {
@@ -34,7 +37,7 @@ public class Juego {
         dealer.iniciarMano(baraja);
     }
 
-    private void añadirJugadores(){
+    private void ingresarJugadores(){
         do {
             crearJugador();
             System.out.println("Quiere agregar otro jugador? y/n");
@@ -67,28 +70,24 @@ public class Juego {
 
     private void iniciarPartida() {
         System.out.println("\nINICIA EL JUEGO\n");
-
-        for (Jugador jugador: jugadores) {
-            turnoJugador(jugador);
-        }
+        jugadores.forEach(this::turnoJugador);
         turnoDealer();
-        System.out.println(obtenerPuntajes());
+        verficarGanador();
     }
 
     private void turnoJugador(Jugador jugador){
-        if(jugador.obtenerPuntajeMano() == 21) {System.out.println("\nGANASTE!"); return;}
         System.out.println("Turno de " + jugador.getNombre() + "\n");
+        if(jugador.obtenerPuntajeMano() == 21) {System.out.println(jugador.getNombre() + " obtuvo BLACKJACK!"); return;}
         bucle:
         while (true){
             jugador.mostrarMano();
             dealer.mostrarMano();
-            if (jugador.obtenerPuntajeMano()>21) {System.out.println("\nPERDISTE!\n"); break;}
+            if (jugador.obtenerPuntajeMano()>21) {System.out.println(jugador.getNombre() + " a PERDIDO!\n"); break;}
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
                 case 1 -> jugador.pedirCarta(baraja);
                 case 2 -> {bajarse(jugador); break bucle;}
-                case 3 -> System.out.println("No implementado todavia");
-                case 4 -> {System.out.println("Hasta pronto"); break bucle;}
+                case 3 -> System.out.println("No implementado");
                 default -> System.err.println("Por favor, ingrese una de las opciones");
             }
         }
@@ -114,12 +113,60 @@ public class Juego {
         }
     }
 
-    private void verficarGanador(){
+    private void ordenarJugadoresPorPuntaje(ArrayList<Jugador> jugadores){
+        jugadores.sort(Comparator.comparing(Jugador::obtenerPuntajeMano));
+        Collections.reverse(jugadores);
+    }
 
+    private void verficarGanador(){
+        ArrayList<Jugador> jugadoresEnJuego = new ArrayList<>();
+        for (Jugador jugador : jugadores) {
+            if (jugador.obtenerPuntajeMano() > 21) pagarApuesta(jugador);
+            else jugadoresEnJuego.add(jugador);
+        }
+        if (dealer.obtenerPuntajeMano() <= 21) {
+            jugadoresEnJuego.add(dealer);
+        }
+        ordenarJugadoresPorPuntaje(jugadoresEnJuego);
+        for (Jugador jugador: jugadoresEnJuego) {
+            if(jugadoresEnJuego.get(0).obtenerPuntajeMano()>jugador.obtenerPuntajeMano()) pagarApuesta(jugador);
+            else recibirDinero(jugador);
+        }
+    }
+
+    private void recibirDinero(Jugador jugador) {
+        System.out.println(jugador.getNombre() + " recibe " + (jugador.getApuesta()*2) + " pesos");
+        int monto = jugador.getMonto();
+        int apuesta = jugador.getApuesta();
+        jugador.setMonto(monto + (apuesta*2));
+    }
+
+    private void pagarApuesta(Jugador jugador) {
+        System.out.println(jugador.getNombre() + " pierde " + jugador.getApuesta() + " pesos");
+        int monto = jugador.getMonto();
+        int apuesta = jugador.getApuesta();
+        jugador.setMonto(monto - apuesta);
+    }
+
+    private void mostrarPuntajes(){
+        HashMap<String, Integer> puntajes = obtenerPuntajes();
+        puntajes.forEach((nombre, puntaje) -> System.out.println("Puntaje de " + nombre + ": " + puntaje));
+    }
+
+    private void mostrarResultadosFinales(){
+        System.out.println("------------------------------------------------------------------------");
+        mostrarPuntajes();
+        System.out.println("------------------------------------------------------------------------");
+        mostrarMontosFinales();
+    }
+
+    private void mostrarMontosFinales(){
+        jugadores.stream().map(jugador -> "Monto final de " + jugador.getNombre() + ": " + jugador.getMonto())
+                .forEach(System.out::println);
     }
 
     private void mostrarMenu(){
-        System.out.print("[1].Pedir Carta\n[2].Bajarte\n[3].Partir Mano\n[4].Salir del juego\n> ");
+        System.out.print("[1].Pedir Carta\n[2].Bajarte\n[3].Partir Mano\n> ");
     }
 
 }
