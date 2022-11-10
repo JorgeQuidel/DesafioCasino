@@ -5,11 +5,20 @@ import java.util.Scanner;
 
 public class Utilidad {
 
-    public static int pedirOpcionMenorA(int base){
+    public static int pedirOpcionPositivaMenorA(int limite){
+        int valor = pedirOpcionEnteraPositiva();
+        if(valor > limite){
+            System.err.println("Por favor ingrese un numero menor o igual a " + limite);
+            return pedirOpcionPositivaMenorA(limite);
+        }else {
+            return valor;
+        }
+    }
+    public static int pedirOpcionMenorA(int limite){
         int valor = pedirOpcionEntera();
-        if(valor > base){
-            System.err.println("Por favor ingrese un numero menor o igual a " + base);
-            return pedirOpcionMenorA(base);
+        if(valor > limite){
+            System.err.println("Por favor ingrese un numero menor o igual a " + limite);
+            return pedirOpcionMenorA(limite);
         }else {
             return valor;
         }
@@ -36,6 +45,16 @@ public class Utilidad {
 
     public static int pedirValorEntero() throws InputMismatchException {
         return new Scanner(System.in).nextInt();
+    }
+
+    public static String pedirStringEspecifico(String stringEsperado, String stringEsperado2) {
+        String resultante = pedirString();
+        if(!resultante.equalsIgnoreCase(stringEsperado) && !resultante.equalsIgnoreCase(stringEsperado2)){
+            System.err.println("Ingrese una de las opciones indicadas");
+            return pedirStringEspecifico(stringEsperado, stringEsperado2);
+        }else{
+            return resultante;
+        }
     }
 
     public static String pedirStringNoVacio() {
