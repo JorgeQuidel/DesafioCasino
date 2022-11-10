@@ -83,14 +83,4 @@ public class Jugador {
         System.out.println(nombre + ": " + mano);
     }
 
-    @Override
-    public String toString() {
-        return "BlackjackPOO.Jugador{" +
-                "nombre='" + nombre + '\'' +
-                ", esDealer=" + esDealer +
-                ", mano=" + mano +
-                ", apuesta=" + apuesta +
-                ", monto=" + monto +
-                '}';
-    }
 }

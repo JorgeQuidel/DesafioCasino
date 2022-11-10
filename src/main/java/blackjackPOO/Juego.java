@@ -1,155 +1,125 @@
 package blackjackPOO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 public class Juego {
     private Baraja baraja;
-    private Jugador jugador;
+    private ArrayList<Jugador> jugadores;
     private Jugador dealer;
 
     public Juego() {
         this.baraja = new Baraja();
-        this.jugador = new Jugador(false);
+        this.jugadores = new ArrayList<>();
         this.dealer = new Jugador(true);
     }
 
     public void jugar() {
+        iniciarBaraja();
+        crearDealer();
+        añadirJugadores();
+        iniciarPartida();
+    }
+
+    private void iniciarBaraja() {
         baraja.llenarBaraja();
         baraja.barajar();
-        inicializarDealer();
-        inicializarJugador();
-        //añadirJugadores(baraja);
-
-        System.out.println("\nINICIA EL JUEGO\n");
-
-        if(jugador.getMano().esBlackjack()) {System.out.println("\nGANASTE!"); return;}
-        turnoJugador();
     }
 
-    private void inicializarJugador() {
-        ingresarDatosJugador();
-        jugador.iniciarMano(baraja);
-    }
-
-    private void ingresarDatosJugador() {
-        ingresarNombre();
-        ingresarMonto();
-        ingresarApuesta();
-    }
-    private void ingresarNombre(){
-        System.out.print("Ingrese su nombre: ");
-        jugador.setNombre(Utilidad.pedirStringNoVacio());
-    }
-
-    private void ingresarMonto(){
-        System.out.print("Ingrese su monto: ");
-        jugador.setMonto(Utilidad.pedirOpcionEnteraPositiva());
-    }
-
-    private void ingresarApuesta(){
-        System.out.print("Ingrese su apuesta: ");
-        jugador.setApuesta(Utilidad.pedirOpcionMenorA(jugador.getMonto()));
-    }
-
-    private void inicializarDealer() {
+    private void crearDealer() {
         dealer.setNombre("Dealer");
         dealer.setMonto(5000000);
         dealer.setApuesta(250000);
         dealer.iniciarMano(baraja);
     }
 
-    private void turnoJugador(){
+    private void añadirJugadores(){
+        do {
+            crearJugador();
+            System.out.println("Quiere agregar otro jugador? y/n");
+        } while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
+    }
+
+    private void crearJugador(){
+        Jugador jugador = new Jugador(false);
+        ingresarNombre(jugador);
+        ingresarMonto(jugador);
+        ingresarApuesta(jugador);
+        jugador.iniciarMano(baraja);
+        jugadores.add(jugador);
+    }
+
+    private void ingresarNombre(Jugador jugador){
+        System.out.print("Ingrese su nombre: ");
+        jugador.setNombre(Utilidad.pedirStringNoVacio());
+    }
+
+    private void ingresarMonto(Jugador jugador){
+        System.out.print("Ingrese su monto: ");
+        jugador.setMonto(Utilidad.pedirOpcionEnteraPositiva());
+    }
+
+    private void ingresarApuesta(Jugador jugador){
+        System.out.print("Ingrese su apuesta: ");
+        jugador.setApuesta(Utilidad.pedirOpcionPositivaMenorA(jugador.getMonto()));
+    }
+
+    private void iniciarPartida() {
+        System.out.println("\nINICIA EL JUEGO\n");
+
+        for (Jugador jugador: jugadores) {
+            turnoJugador(jugador);
+        }
+        turnoDealer();
+        System.out.println(obtenerPuntajes());
+    }
+
+    private void turnoJugador(Jugador jugador){
+        if(jugador.obtenerPuntajeMano() == 21) {System.out.println("\nGANASTE!"); return;}
+        System.out.println("Turno de " + jugador.getNombre() + "\n");
         bucle:
         while (true){
             jugador.mostrarMano();
             dealer.mostrarMano();
-
-            if (jugador.getMano().esMayorQue21()) {System.out.println("\nPERDISTE!"); break;}
-
+            if (jugador.obtenerPuntajeMano()>21) {System.out.println("\nPERDISTE!\n"); break;}
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
                 case 1 -> jugador.pedirCarta(baraja);
-                case 2 -> {bajarse(); break bucle;}
+                case 2 -> {bajarse(jugador); break bucle;}
                 case 3 -> System.out.println("No implementado todavia");
                 case 4 -> {System.out.println("Hasta pronto"); break bucle;}
-                default -> System.out.println("Por favor, ingrese una de las opciones");
+                default -> System.err.println("Por favor, ingrese una de las opciones");
             }
         }
     }
 
-    /*private void añadirJugadores(BlackjackPOO.Baraja baraja){
-        do {
-            var jugador = new BlackjackPOO.Jugador(false);
+    private void bajarse(Jugador jugador){
 
-            System.out.print("Ingrese su nombre: ");
-            jugador.setNombre(BlackjackPOO.Utilidad.pedirString());
+    }
 
-            System.out.print("Ingrese su monto: ");
-            jugador.setMonto(BlackjackPOO.Utilidad.pedirOpcionEntera());
+    private HashMap<String, Integer> obtenerPuntajes() {
+        return jugadores.stream()
+                .collect(Collectors
+                        .toMap(Jugador::getNombre, Jugador::obtenerPuntajeMano, (a, b) -> b, HashMap::new));
+    }
 
-            System.out.print("Ingrese su apuesta: ");
-            jugador.setApuesta(BlackjackPOO.Utilidad.pedirOpcionEntera());
-
-            jugador.iniciarMano(baraja);
-            jugadores.add(jugador);
-            System.out.println("Quiere agregar otro jugador? y/n");
-        } while (BlackjackPOO.Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
-    }*/
-
-    private void bajarse(){
+    private void turnoDealer(){
+        System.out.println("\nTurno del Dealer\n");
         dealer.getMano().getCartas().get(1).voltearCarta();
         dealer.mostrarMano();
-        turnoDealer();
-        var ganador = verificarGanador();
-        mostrarResultados(ganador);
-    }
-
-    /*public HashMap<String, Integer> obtenerPuntajes() {
-        return jugadores.stream()
-                .collect(Collectors.toMap(BlackjackPOO.Jugador::getNombre, BlackjackPOO.Jugador::puntajeMano, (a, b) -> b, HashMap::new));
-    }*/
-
-    public void turnoDealer(){
-        while(dealer.getMano().obtenerPuntaje() < 17) dealer.pedirCarta(baraja);
-    }
-
-    private Jugador verificarGanador() {
-        int puntosJugador = jugador.obtenerPuntajeMano();
-        int puntosDealer = dealer.obtenerPuntajeMano();
-
-        if(puntosDealer>21){
-            return jugador;
-        }else if(puntosJugador>21) {
-            return dealer;
-        }else if(puntosDealer>puntosJugador) {
-            return dealer;
-        }else if (puntosDealer<puntosJugador) {
-            return jugador;
-        }else {
-            return dealer;
+        while(dealer.obtenerPuntajeMano() < 17) {
+            dealer.pedirCarta(baraja);
+            dealer.mostrarMano();
         }
     }
 
-    private void mostrarResultados(Jugador ganador) {
-        if(ganador == dealer){
-            System.out.println("\nPERDISTE!");
-        }else {
-            System.out.println("\nGANASTE!");
-        }
-        mostrarPuntajes();
-        //System.out.println(obtenerPuntajes());
-    }
+    private void verficarGanador(){
 
-    private void mostrarPuntajes(){
-        System.out.println("Puntaje Dealer = " + dealer.obtenerPuntajeMano());
-        System.out.println("Puntaje " + jugador.getNombre() + " = "+ jugador.obtenerPuntajeMano());
     }
 
     private void mostrarMenu(){
-        System.out.print("""
-                [1].Pedir Carta
-                [2].Bajarte
-                [3].Partir Mano
-                [4].Salir del juego
-                """.concat("> "));
+        System.out.print("[1].Pedir Carta\n[2].Bajarte\n[3].Partir Mano\n[4].Salir del juego\n> ");
     }
 
 }
