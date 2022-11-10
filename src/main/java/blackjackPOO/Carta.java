@@ -31,7 +31,7 @@ public class Carta {
     @Override
     public String toString() {
         if(estaBocaArriba){
-            return indice.getStringIndice() + " " + pinta.getPintaElegida();
+            return indice.getStringIndice() + " " + pinta;
         }else {
             return "?";
         }
