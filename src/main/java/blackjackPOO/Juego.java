@@ -32,8 +32,6 @@ public class Juego {
 
     private void crearDealer() {
         dealer.setNombre("Dealer");
-        dealer.setMonto(5000000);
-        dealer.setApuesta(250000);
         dealer.iniciarMano(baraja);
     }
 
@@ -54,8 +52,8 @@ public class Juego {
     }
 
     private void ingresarNombre(Jugador jugador){
-        System.out.print("Ingrese su nombre: ");
-        jugador.setNombre(Utilidad.pedirStringNoVacio());
+        System.out.print("Ingrese su nombre (limite de 20 caracteres): ");
+        jugador.setNombre(Utilidad.pedirStringNoVacio(20));
     }
 
     private void ingresarMonto(Jugador jugador){
@@ -85,16 +83,19 @@ public class Juego {
             if (jugador.obtenerPuntajeMano()>21) {System.out.println(jugador.getNombre() + " a PERDIDO!\n"); break;}
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
-                case 1 -> jugador.pedirCarta(baraja);
-                case 2 -> {bajarse(jugador); break bucle;}
-                case 3 -> System.out.println("No implementado");
-                default -> System.err.println("Por favor, ingrese una de las opciones");
+                case 1:
+                    jugador.pedirCarta(baraja);
+                    break;
+                case 2:
+                    break bucle;
+                case 3:
+                    System.out.println("No implementado");
+                    break;
+                default:
+                    System.err.println("Por favor, ingrese una de las opciones");
+                    break;
             }
         }
-    }
-
-    private void bajarse(Jugador jugador){
-
     }
 
     private HashMap<String, Integer> obtenerPuntajes() {
@@ -119,30 +120,45 @@ public class Juego {
     }
 
     private void verficarGanador(){
+        System.out.println("------------------------------------------------------------------------");
         ArrayList<Jugador> jugadoresEnJuego = new ArrayList<>();
-        for (Jugador jugador : jugadores) {
-            if (jugador.obtenerPuntajeMano() > 21) pagarApuesta(jugador);
-            else jugadoresEnJuego.add(jugador);
-        }
-        if (dealer.obtenerPuntajeMano() <= 21) {
-            jugadoresEnJuego.add(dealer);
-        }
+        obtenerJugadoresEnJuego(jugadoresEnJuego);
+        System.out.println("------------------------------------------------------------------------");
+        if (dealer.obtenerPuntajeMano() <= 21) jugadoresEnJuego.add(dealer);
         ordenarJugadoresPorPuntaje(jugadoresEnJuego);
+        distribuirDinero(jugadoresEnJuego);
+    }
+
+    private void distribuirDinero(ArrayList<Jugador> jugadoresEnJuego) {
         for (Jugador jugador: jugadoresEnJuego) {
-            if(jugadoresEnJuego.get(0).obtenerPuntajeMano()>jugador.obtenerPuntajeMano()) pagarApuesta(jugador);
-            else recibirDinero(jugador);
+            if(jugadoresEnJuego.get(0).obtenerPuntajeMano() > jugador.obtenerPuntajeMano()) {
+                pagarApuesta(jugador);
+            } else {
+                recibirDinero(jugador);
+            }
+        }
+    }
+
+    private void obtenerJugadoresEnJuego(ArrayList<Jugador> jugadoresEnJuego) {
+        for (Jugador jugador : jugadores) {
+            if (jugador.obtenerPuntajeMano() > 21) {
+                pagarApuesta(jugador);
+            } else {
+                jugadoresEnJuego.add(jugador);
+            }
         }
     }
 
     private void recibirDinero(Jugador jugador) {
-        System.out.println(jugador.getNombre() + " recibe " + (jugador.getApuesta()*2) + " pesos");
+        if(jugador.equals(dealer)) return;
+        System.out.println("A " + jugador.getNombre() + " se le paga " + (jugador.getApuesta()*2) + " pesos");
         int monto = jugador.getMonto();
         int apuesta = jugador.getApuesta();
         jugador.setMonto(monto + (apuesta*2));
     }
 
     private void pagarApuesta(Jugador jugador) {
-        System.out.println(jugador.getNombre() + " pierde " + jugador.getApuesta() + " pesos");
+        System.out.println(jugador.getNombre() + " tiene que pagar " + jugador.getApuesta() + " pesos");
         int monto = jugador.getMonto();
         int apuesta = jugador.getApuesta();
         jugador.setMonto(monto - apuesta);
@@ -150,6 +166,7 @@ public class Juego {
 
     private void mostrarPuntajes(){
         HashMap<String, Integer> puntajes = obtenerPuntajes();
+        System.out.println("Puntaje del Dealer: " + dealer.obtenerPuntajeMano());
         puntajes.forEach((nombre, puntaje) -> System.out.println("Puntaje de " + nombre + ": " + puntaje));
     }
 
@@ -168,5 +185,4 @@ public class Juego {
     private void mostrarMenu(){
         System.out.print("[1].Pedir Carta\n[2].Bajarte\n[3].Partir Mano\n> ");
     }
-
 }
