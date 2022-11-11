@@ -57,6 +57,16 @@ public class Utilidad {
         }
     }
 
+    public static String pedirStringNoVacio(int limite) {
+        String texto = pedirStringNoVacio();
+        if(texto.length() > limite){
+            System.err.println("La entrada ingresada supera el limite, intente nuevamente");
+            return pedirStringNoVacio(limite);
+        }else {
+            return texto;
+        }
+    }
+
     public static String pedirStringNoVacio() {
         String texto = pedirString();
         if(texto.isBlank()){
