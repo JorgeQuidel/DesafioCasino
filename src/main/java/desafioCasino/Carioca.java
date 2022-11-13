@@ -1,4 +1,4 @@
-package blackjackPOO;
+package desafioCasino;
 
 public class Carioca extends Juego {
     @Override

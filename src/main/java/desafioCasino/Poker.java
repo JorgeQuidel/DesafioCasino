@@ -1,4 +1,4 @@
-package blackjackPOO;
+package desafioCasino;
 
 public class Poker extends Juego {
     @Override

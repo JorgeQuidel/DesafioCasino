@@ -1,6 +1,6 @@
-import blackjackPOO.Indice;
-import blackjackPOO.*;
-import blackjackPOO.Pinta;
+import desafioCasino.Indice;
+import desafioCasino.*;
+import desafioCasino.Pinta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
