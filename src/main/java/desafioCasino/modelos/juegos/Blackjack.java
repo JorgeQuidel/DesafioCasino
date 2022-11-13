@@ -1,4 +1,4 @@
-package desafioCasino.juegos;
+package desafioCasino.modelos.juegos;
 
 import desafioCasino.modelos.Baraja;
 import desafioCasino.modelos.Jugador;

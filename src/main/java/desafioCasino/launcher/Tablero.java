@@ -1,9 +1,9 @@
 package desafioCasino.launcher;
 
-import desafioCasino.juegos.Blackjack;
-import desafioCasino.juegos.Carioca;
-import desafioCasino.juegos.Escoba;
-import desafioCasino.juegos.Poker;
+import desafioCasino.modelos.juegos.Blackjack;
+import desafioCasino.modelos.juegos.Carioca;
+import desafioCasino.modelos.juegos.Escoba;
+import desafioCasino.modelos.juegos.Poker;
 import desafioCasino.utilidades.Utilidad;
 
 public class Tablero {

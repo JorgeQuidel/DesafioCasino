@@ -1,4 +1,4 @@
-package desafioCasino.juegos;
+package desafioCasino.modelos.juegos;
 
 public class Poker extends Juego {
     @Override
