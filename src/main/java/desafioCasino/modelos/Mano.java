@@ -1,4 +1,6 @@
-package desafioCasino;
+package desafioCasino.modelos;
+
+import desafioCasino.modelos.Carta;
 
 import java.util.ArrayList;
 import java.util.List;

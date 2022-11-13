@@ -1,4 +1,8 @@
-import desafioCasino.*;
+import desafioCasino.enums.Indice;
+import desafioCasino.enums.Pinta;
+import desafioCasino.modelos.Baraja;
+import desafioCasino.modelos.Carta;
+import desafioCasino.modelos.Jugador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package desafioCasino;
+package desafioCasino.modelos;
 
 import java.util.List;
 

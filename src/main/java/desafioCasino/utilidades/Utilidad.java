@@ -1,4 +1,4 @@
-package desafioCasino;
+package desafioCasino.utilidades;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

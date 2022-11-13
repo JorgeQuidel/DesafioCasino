@@ -1,4 +1,7 @@
-package desafioCasino;
+package desafioCasino.modelos;
+
+import desafioCasino.enums.Indice;
+import desafioCasino.enums.Pinta;
 
 public class Carta {
     private Indice indice;

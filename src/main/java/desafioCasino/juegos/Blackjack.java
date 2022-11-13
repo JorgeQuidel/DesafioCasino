@@ -1,4 +1,8 @@
-package desafioCasino;
+package desafioCasino.juegos;
+
+import desafioCasino.modelos.Baraja;
+import desafioCasino.modelos.Jugador;
+import desafioCasino.utilidades.Utilidad;
 
 import java.util.ArrayList;
 import java.util.HashMap;
