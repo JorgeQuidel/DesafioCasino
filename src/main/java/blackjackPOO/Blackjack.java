@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class Blackjack  {
+public class Blackjack extends Juego {
     private Baraja baraja;
     private ArrayList<Jugador> jugadores;
     private Jugador dealer;
@@ -15,6 +15,7 @@ public class Blackjack  {
         this.dealer = new Jugador(true);
     }
 
+    @Override
     public void jugar() {
         iniciarBaraja();
         crearDealer();
