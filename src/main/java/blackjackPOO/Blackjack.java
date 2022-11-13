@@ -1,17 +1,15 @@
 package blackjackPOO;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class Juego {
+public class Blackjack  {
     private Baraja baraja;
     private ArrayList<Jugador> jugadores;
     private Jugador dealer;
 
-    public Juego() {
+    public Blackjack() {
         this.baraja = new Baraja();
         this.jugadores = new ArrayList<>();
         this.dealer = new Jugador(true);
@@ -52,6 +50,7 @@ public class Juego {
     }
 
     private void ingresarNombre(Jugador jugador){
+        // TODO que no se repita el nombre de otro jugador
         System.out.print("Ingrese su nombre (limite de 20 caracteres): ");
         jugador.setNombre(Utilidad.pedirStringNoVacio(20));
     }
@@ -75,7 +74,7 @@ public class Juego {
 
     private void turnoJugador(Jugador jugador){
         System.out.println("Turno de " + jugador.getNombre() + "\n");
-        if(jugador.obtenerPuntajeMano() == 21) {System.out.println(jugador.getNombre() + " obtuvo BLACKJACK!"); return;}
+        if(jugador.obtenerPuntajeMano() == 21) {mostrarBlackjack(jugador); return;}
         bucle:
         while (true){
             jugador.mostrarMano();
@@ -98,6 +97,11 @@ public class Juego {
         }
     }
 
+    private void mostrarBlackjack(Jugador jugador) {
+        jugador.mostrarMano();
+        System.out.println(jugador.getNombre() + " obtuvo BLACKJACK!\n");
+    }
+
     private HashMap<String, Integer> obtenerPuntajes() {
         return jugadores.stream()
                 .collect(Collectors
@@ -112,31 +116,7 @@ public class Juego {
             dealer.pedirCarta(baraja);
             dealer.mostrarMano();
         }
-    }
-
-    private void ordenarJugadoresPorPuntaje(ArrayList<Jugador> jugadores){
-        jugadores.sort(Comparator.comparing(Jugador::obtenerPuntajeMano));
-        Collections.reverse(jugadores);
-    }
-
-    private void verficarGanador(){
         System.out.println("------------------------------------------------------------------------");
-        ArrayList<Jugador> jugadoresEnJuego = new ArrayList<>();
-        obtenerJugadoresEnJuego(jugadoresEnJuego);
-        System.out.println("------------------------------------------------------------------------");
-        if (dealer.obtenerPuntajeMano() <= 21) jugadoresEnJuego.add(dealer);
-        ordenarJugadoresPorPuntaje(jugadoresEnJuego);
-        distribuirDinero(jugadoresEnJuego);
-    }
-
-    private void distribuirDinero(ArrayList<Jugador> jugadoresEnJuego) {
-        for (Jugador jugador: jugadoresEnJuego) {
-            if(jugadoresEnJuego.get(0).obtenerPuntajeMano() > jugador.obtenerPuntajeMano()) {
-                pagarApuesta(jugador);
-            } else {
-                recibirDinero(jugador);
-            }
-        }
     }
 
     private void obtenerJugadoresEnJuego(ArrayList<Jugador> jugadoresEnJuego) {
@@ -146,6 +126,26 @@ public class Juego {
             } else {
                 jugadoresEnJuego.add(jugador);
             }
+        }
+    }
+
+    public void verficarGanador(){
+        ArrayList<Jugador> jugadoresEnJuego = new ArrayList<>();
+        obtenerJugadoresEnJuego(jugadoresEnJuego);
+        if (dealer.obtenerPuntajeMano() > 21) {
+            jugadoresEnJuego.forEach(this::recibirDinero);
+        }else{
+            jugadoresEnJuego.forEach(this::compararJugadores);
+        }
+    }
+
+    private void compararJugadores(Jugador jugador) {
+        if(dealer.obtenerPuntajeMano() > jugador.obtenerPuntajeMano()) {
+            pagarApuesta(jugador);
+        } else if(dealer.obtenerPuntajeMano() < jugador.obtenerPuntajeMano()) {
+            recibirDinero(jugador);
+        } else {
+            System.out.println("Empate, a " + jugador.getNombre() + " se le devuelve su apuesta");
         }
     }
 

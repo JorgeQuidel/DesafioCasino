@@ -1,6 +1,6 @@
 package blackjackPOO;
 public class Tablero {
     public static void main(String[] args) {
-        new Juego().jugar();
+        new Blackjack().jugar();
     }
 }
