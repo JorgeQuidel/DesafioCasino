@@ -1,4 +1,4 @@
-package desafioCasino.enums;
+package desafioCasino.modelos.enums;
 
 public enum Indice {
     AS(11, "A"),

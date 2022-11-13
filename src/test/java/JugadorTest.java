@@ -1,5 +1,5 @@
-import desafioCasino.enums.Indice;
-import desafioCasino.enums.Pinta;
+import desafioCasino.modelos.enums.Indice;
+import desafioCasino.modelos.enums.Pinta;
 import desafioCasino.modelos.Baraja;
 import desafioCasino.modelos.Carta;
 import desafioCasino.modelos.Jugador;
