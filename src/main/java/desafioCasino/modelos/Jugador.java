@@ -49,14 +49,7 @@ public class Jugador {
     }*/
 
     public int obtenerPuntajeMano(){
-        int puntaje = mano.obtenerPuntaje();
-        List<Carta> cartas = mano.getCartas();
-        for (Carta carta : cartas) {
-            if(carta.esAs() && puntaje > 21){
-                puntaje -=10;
-            }
-        }
-        return puntaje;
+        return mano.obtenerPuntaje();
     }
 
     public String getNombre() {
