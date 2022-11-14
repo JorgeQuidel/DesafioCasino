@@ -6,7 +6,6 @@ import desafioCasino.modelos.Jugador;
 import desafioCasino.utilidades.Utilidad;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Blackjack extends Juego {
@@ -26,7 +25,7 @@ public class Blackjack extends Juego {
         crearDealer();
         do{
             iniciarBaraja();
-            iniciarJugadores();
+            iniciarManoJugadores();
             iniciarPartida();
             mostrarResultadosFinales();
             limpiarJuego();
@@ -34,16 +33,15 @@ public class Blackjack extends Juego {
         }while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
     }
 
-    private void iniciarJugadores() {
-        jugadores.forEach(this::iniciarManoJugador);
-        iniciarManoJugador(dealer);
-        dealer.getMano().getCartas().get(1).voltearCarta();
+    private void ingresarJugadores(){
+        do {
+            crearJugador();
+            System.out.println("Quiere agregar otro jugador? y/n");
+        } while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
     }
 
-    private void iniciarManoJugador(Jugador jugador){
-        for (int i = 0; i < 2; i++) {
-            jugador.pedirCarta(baraja);
-        }
+    private void crearDealer() {
+        dealer.setNombre("Dealer");
     }
 
     private void iniciarBaraja() {
@@ -51,15 +49,15 @@ public class Blackjack extends Juego {
         baraja.barajar();
     }
 
-    private void crearDealer() {
-        dealer.setNombre("Dealer");
+    private void iniciarManoJugadores() {
+        jugadores.forEach(this::repartirCartas);
+        repartirCartas(dealer);
+        dealer.voltearCarta(1);
     }
 
-    private void ingresarJugadores(){
-        do {
-            crearJugador();
-            System.out.println("Quiere agregar otro jugador? y/n");
-        } while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
+    private void repartirCartas(Jugador jugador){
+        jugador.pedirCarta(baraja);
+        jugador.pedirCarta(baraja);
     }
 
     private void crearJugador(){
@@ -104,8 +102,8 @@ public class Blackjack extends Juego {
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
                 case 1 -> jugador.pedirCarta(baraja);
-                case 2->{System.out.println(jugador.getNombre() + " se baja\n"); break bucle;}
-                case 3 -> System.out.println("No implementado");
+                case 2 -> System.out.println("No implementado");
+                case 3 -> {System.out.println(jugador.getNombre() + " se baja\n"); break bucle;}
                 default -> System.err.println("Por favor, ingrese una de las opciones");
             }
         }
@@ -127,17 +125,9 @@ public class Blackjack extends Juego {
         System.out.println(jugador.getNombre() + " obtuvo BLACKJACK!\n");
     }
 
-    private HashMap<String, Integer> obtenerPuntajes() {
-        HashMap<String, Integer> map = new HashMap<>();
-        for (Jugador jugador : jugadores) {
-            map.put(jugador.getNombre(), obtenerPuntajeJugador(jugador));
-        }
-        return map;
-    }
-
     private void turnoDealer(){
         System.out.println("\nTurno del Dealer\n");
-        dealer.getMano().getCartas().get(1).voltearCarta();
+        dealer.voltearCarta(1);
         dealer.mostrarMano();
         while(obtenerPuntajeJugador(dealer) < 17) {
             dealer.pedirCarta(baraja);
@@ -162,39 +152,32 @@ public class Blackjack extends Juego {
         if (obtenerPuntajeJugador(dealer) > 21) {
             jugadoresEnJuego.forEach(this::recibirDinero);
         }else{
-            jugadoresEnJuego.forEach(this::compararJugadores);
+            jugadoresEnJuego.forEach(this::compararPuntaje);
         }
     }
 
-    private void compararJugadores(Jugador jugador) {
+    private void compararPuntaje(Jugador jugador) {
         if(obtenerPuntajeJugador(dealer) > obtenerPuntajeJugador(jugador)) {
             pagarApuesta(jugador);
         } else if(obtenerPuntajeJugador(dealer) < obtenerPuntajeJugador(jugador)) {
             recibirDinero(jugador);
         } else {
-            System.out.println("Empate, a " + jugador.getNombre() + " se le devuelve su apuesta");
+            System.out.println(jugador.getNombre() + " recupera su apuesta");
         }
     }
 
     private void recibirDinero(Jugador jugador) {
-        if(jugador.equals(dealer)) return;
-        System.out.println("A " + jugador.getNombre() + " se le paga " + (jugador.getApuesta()*2) + " pesos");
+        System.out.println(jugador.getNombre() + " gana " + (jugador.getApuesta()*2) + " pesos");
         int monto = jugador.getMonto();
         int apuesta = jugador.getApuesta();
         jugador.setMonto(monto + (apuesta*2));
     }
 
     private void pagarApuesta(Jugador jugador) {
-        System.out.println(jugador.getNombre() + " tiene que pagar " + jugador.getApuesta() + " pesos");
+        System.out.println(jugador.getNombre() + " pierde " + jugador.getApuesta() + " pesos");
         int monto = jugador.getMonto();
         int apuesta = jugador.getApuesta();
         jugador.setMonto(monto - apuesta);
-    }
-
-    private void mostrarPuntajes(){
-        HashMap<String, Integer> puntajes = obtenerPuntajes();
-        System.out.println("Puntaje del Dealer: " + obtenerPuntajeJugador(dealer));
-        puntajes.forEach((nombre, puntaje) -> System.out.println("Puntaje de " + nombre + ": " + puntaje));
     }
 
     private void mostrarResultadosFinales(){
@@ -202,6 +185,13 @@ public class Blackjack extends Juego {
         mostrarPuntajes();
         System.out.println("------------------------------------------------------------------------");
         mostrarMontosFinales();
+    }
+
+    private void mostrarPuntajes(){
+        System.out.println("Puntaje del Dealer " + ": " + obtenerPuntajeJugador(dealer));
+        jugadores.stream()
+                .map(jugador -> "Puntaje de " + jugador.getNombre() + ": " + obtenerPuntajeJugador(jugador))
+                .forEach(System.out::println);
     }
 
     private void mostrarMontosFinales(){
@@ -217,6 +207,6 @@ public class Blackjack extends Juego {
     }
 
     private void mostrarMenu(){
-        System.out.print("[1].Pedir Carta\n[2].Bajarte\n[3].Partir Mano\n> ");
+        System.out.print("[1].Pedir Carta\n[2].Partir Mano\n[3].Bajarse\n> ");
     }
 }

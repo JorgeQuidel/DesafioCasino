@@ -1,12 +1,12 @@
 package desafioCasino.modelos;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Jugador {
     private String nombre;
     private boolean esDealer;
     private Mano mano;
-    //private List<Mano> manos;
+    //private ArrayList<Mano> manos;
     private int apuesta;
     private int monto;
 
@@ -27,22 +27,12 @@ public class Jugador {
         mano.addCarta(baraja.sacarCarta());
     }
 
-    /*public void partirMano(){
-        BlackjackPOO.Mano manoNueva = new BlackjackPOO.Mano();
-        BlackjackPOO.Mano manoAntigua = new BlackjackPOO.Mano();
-
-        BlackjackPOO.Carta cartaManoAntigua = manoActual.getCartas().get(0);
-        BlackjackPOO.Carta cartaManoNueva = manoActual.getCartas().get(1);
-
-        manoAntigua.añadirCarta(cartaManoAntigua);
-        manoNueva.añadirCarta(cartaManoNueva);
-
-        manoActual = manoAntigua;
-        manos.add(manoNueva);
-    }*/
-
     public int obtenerPuntajeMano(){
         return mano.obtenerPuntaje();
+    }
+
+    public void voltearCarta(int carta){
+        mano.getCartas().get(carta).voltearCarta();
     }
 
     public String getNombre() {
