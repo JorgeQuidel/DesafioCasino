@@ -22,11 +22,28 @@ public class Blackjack extends Juego {
 
     @Override
     public void jugar() {
-        iniciarBaraja();
-        crearDealer();
         ingresarJugadores();
-        iniciarPartida();
-        mostrarResultadosFinales();
+        crearDealer();
+        do{
+            iniciarBaraja();
+            iniciarJugadores();
+            iniciarPartida();
+            mostrarResultadosFinales();
+            limpiarJuego();
+            System.out.println("\nQuiere jugar de nuevo? y/n");
+        }while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
+    }
+
+    private void iniciarJugadores() {
+        jugadores.forEach(this::iniciarManoJugador);
+        iniciarManoJugador(dealer);
+        dealer.getMano().getCartas().get(1).voltearCarta();
+    }
+
+    private void iniciarManoJugador(Jugador jugador){
+        for (int i = 0; i < 2; i++) {
+            jugador.pedirCarta(baraja);
+        }
     }
 
     private void iniciarBaraja() {
@@ -36,7 +53,6 @@ public class Blackjack extends Juego {
 
     private void crearDealer() {
         dealer.setNombre("Dealer");
-        dealer.iniciarMano(baraja);
     }
 
     private void ingresarJugadores(){
@@ -51,7 +67,6 @@ public class Blackjack extends Juego {
         ingresarNombre(jugador);
         ingresarMonto(jugador);
         ingresarApuesta(jugador);
-        jugador.iniciarMano(baraja);
         jugadores.add(jugador);
     }
 
@@ -88,17 +103,10 @@ public class Blackjack extends Juego {
             if (obtenerPuntajeJugador(jugador)>21) {System.out.println(jugador.getNombre() + " a PERDIDO!\n"); break;}
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
-                case 1:
-                    jugador.pedirCarta(baraja);
-                    break;
-                case 2:
-                    break bucle;
-                case 3:
-                    System.out.println("No implementado");
-                    break;
-                default:
-                    System.err.println("Por favor, ingrese una de las opciones");
-                    break;
+                case 1 -> jugador.pedirCarta(baraja);
+                case 2->{System.out.println(jugador.getNombre() + " se baja\n"); break bucle;}
+                case 3 -> System.out.println("No implementado");
+                default -> System.err.println("Por favor, ingrese una de las opciones");
             }
         }
     }
@@ -197,8 +205,15 @@ public class Blackjack extends Juego {
     }
 
     private void mostrarMontosFinales(){
-        jugadores.stream().map(jugador -> "Monto final de " + jugador.getNombre() + ": " + jugador.getMonto())
+        jugadores.stream()
+                .map(jugador -> "Monto final de " + jugador.getNombre() + ": " + jugador.getMonto())
                 .forEach(System.out::println);
+    }
+
+    private void limpiarJuego() {
+        jugadores.forEach(jugador -> jugador.getMano().getCartas().clear());
+        baraja.getCartas().clear();
+        dealer.getMano().getCartas().clear();
     }
 
     private void mostrarMenu(){

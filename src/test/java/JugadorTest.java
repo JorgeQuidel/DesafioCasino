@@ -28,13 +28,6 @@ public class JugadorTest {
     }
 
     @Test
-    void iniciarManoTest() {
-        baraja.llenarBaraja();
-        jugador.iniciarMano(baraja);
-        assertEquals(jugador.getMano().getCartas().size(), 2);
-    }
-
-    @Test
     void pedirCartaTestBarajaNull(){
         assertThrows(IndexOutOfBoundsException.class, () ->
                 jugador.pedirCarta(baraja));

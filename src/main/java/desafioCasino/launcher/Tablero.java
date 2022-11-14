@@ -13,7 +13,7 @@ public class Tablero {
     public static void elegirJuego(){
         bucle:
         while(true){
-            System.out.print("Que quiere jugar?\n[1].Blackjack\n[2].Poker\n[3].Carioca\n[4].Escoba\n[0].Salir\n>");
+            System.out.print("\nQue quiere jugar?\n[1].Blackjack\n[2].Poker\n[3].Carioca\n[4].Escoba\n[0].Salir\n>");
             switch (Utilidad.pedirOpcionEntera()) {
                 case 0 -> {System.out.println("Hasta pronto");break bucle;}
                 case 1 -> new Blackjack().jugar();

@@ -23,13 +23,6 @@ public class Jugador {
         this.monto = monto;
     }
 
-    public void iniciarMano(Baraja baraja) {
-        for (int i = 0; i < 2; i++) pedirCarta(baraja);
-        if(esDealer){
-            mano.getCartas().get(1).voltearCarta();
-        }
-    }
-
     public void pedirCarta(Baraja baraja){
         mano.addCarta(baraja.sacarCarta());
     }
