@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Baraja {
-    private List<Carta> cartas;
+    private ArrayList<Carta> cartas;
 
     public Baraja() {
         this.cartas = new ArrayList<>();
@@ -23,7 +23,11 @@ public class Baraja {
 
     }
 
-    public List<Carta> getCartas() {
+    public void añadirCarta(Carta carta){
+        cartas.add(carta);
+    }
+
+    public ArrayList<Carta> getCartas() {
         return cartas;
     }
 
@@ -35,5 +39,9 @@ public class Baraja {
         var carta = cartas.get(0);
         cartas.remove(0);
         return carta;
+    }
+
+    public void limpiarBaraja(){
+        cartas.clear();
     }
 }

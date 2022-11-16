@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mano {
-    private List<Carta> cartas;
+    private ArrayList<Carta> cartas;
 
     public Mano(){
         this.cartas = new ArrayList<>();
@@ -20,7 +20,7 @@ public class Mano {
         return cartas.stream().mapToInt(Carta::getValor).sum();
     }
 
-    public List<Carta> getCartas() {
+    public ArrayList<Carta> getCartas() {
         return cartas;
     }
 

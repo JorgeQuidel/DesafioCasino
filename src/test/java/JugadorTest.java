@@ -23,14 +23,14 @@ public class JugadorTest {
     @Test
     void pedirCartaTest() {
         baraja.llenarBaraja();
-        jugador.pedirCarta(baraja);
+        jugador.sacarCarta(baraja);
         assertEquals(jugador.getMano().getCartas().size(), 1);
     }
 
     @Test
     void pedirCartaTestBarajaNull(){
         assertThrows(IndexOutOfBoundsException.class, () ->
-                jugador.pedirCarta(baraja));
+                jugador.sacarCarta(baraja));
     }
 
     @Test

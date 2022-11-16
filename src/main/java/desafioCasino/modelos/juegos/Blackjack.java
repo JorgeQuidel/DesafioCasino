@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Blackjack extends Juego {
-    private Baraja baraja;
-    private ArrayList<Jugador> jugadores;
     private Jugador dealer;
 
     public Blackjack() {
@@ -22,10 +20,10 @@ public class Blackjack extends Juego {
     @Override
     public void jugar() {
         ingresarJugadores();
-        crearDealer();
         do{
             iniciarBaraja();
-            iniciarManoJugadores();
+            iniciarManoJugadores(2);
+            iniciarDealer();
             iniciarPartida();
             mostrarResultadosFinales();
             limpiarJuego();
@@ -33,65 +31,25 @@ public class Blackjack extends Juego {
         }while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
     }
 
-    private void ingresarJugadores(){
-        do {
-            crearJugador();
-            System.out.println("Quiere agregar otro jugador? y/n");
-        } while (Utilidad.pedirStringEspecifico("y", "n").equalsIgnoreCase("y"));
-    }
-
-    private void crearDealer() {
+    private void iniciarDealer() {
         dealer.setNombre("Dealer");
+        repartirCartas(dealer, 2);
+        dealer.voltearCarta(1);
     }
 
-    private void iniciarBaraja() {
+    public void iniciarBaraja() {
         baraja.llenarBaraja();
         baraja.barajar();
     }
 
-    private void iniciarManoJugadores() {
-        jugadores.forEach(this::repartirCartas);
-        repartirCartas(dealer);
-        dealer.voltearCarta(1);
-    }
-
-    private void repartirCartas(Jugador jugador){
-        jugador.pedirCarta(baraja);
-        jugador.pedirCarta(baraja);
-    }
-
-    private void crearJugador(){
-        Jugador jugador = new Jugador(false);
-        ingresarNombre(jugador);
-        ingresarMonto(jugador);
-        ingresarApuesta(jugador);
-        jugadores.add(jugador);
-    }
-
-    private void ingresarNombre(Jugador jugador){
-        // TODO que no se repita el nombre de otro jugador
-        System.out.print("Ingrese su nombre (limite de 20 caracteres): ");
-        jugador.setNombre(Utilidad.pedirStringNoVacio(20));
-    }
-
-    private void ingresarMonto(Jugador jugador){
-        System.out.print("Ingrese su monto: ");
-        jugador.setMonto(Utilidad.pedirOpcionEnteraPositiva());
-    }
-
-    private void ingresarApuesta(Jugador jugador){
-        System.out.print("Ingrese su apuesta: ");
-        jugador.setApuesta(Utilidad.pedirOpcionPositivaMenorA(jugador.getMonto()));
-    }
-
-    private void iniciarPartida() {
+    public void iniciarPartida() {
         System.out.println("\nINICIA EL JUEGO\n");
         jugadores.forEach(this::turnoJugador);
         turnoDealer();
         verficarGanador();
     }
 
-    private void turnoJugador(Jugador jugador){
+    public void turnoJugador(Jugador jugador){
         System.out.println("Turno de " + jugador.getNombre() + "\n");
         if(obtenerPuntajeJugador(jugador) == 21) {mostrarBlackjack(jugador); return;}
         bucle:
@@ -101,7 +59,7 @@ public class Blackjack extends Juego {
             if (obtenerPuntajeJugador(jugador)>21) {System.out.println(jugador.getNombre() + " a PERDIDO!\n"); break;}
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
-                case 1 -> jugador.pedirCarta(baraja);
+                case 1 -> jugador.sacarCarta(baraja);
                 case 2 -> System.out.println("No implementado");
                 case 3 -> {System.out.println(jugador.getNombre() + " se baja\n"); break bucle;}
                 default -> System.err.println("Por favor, ingrese una de las opciones");
@@ -109,9 +67,9 @@ public class Blackjack extends Juego {
         }
     }
 
-    private int obtenerPuntajeJugador(Jugador jugador){
+    public int obtenerPuntajeJugador(Jugador jugador){
         int puntaje = jugador.obtenerPuntajeMano();
-        List<Carta> cartas = jugador.getMano().getCartas();
+        List<Carta> cartas = jugador.obtenerCartasMano();
         for (Carta carta : cartas) {
             if(carta.esAs() && puntaje > 21){
                 puntaje -=10;
@@ -130,13 +88,13 @@ public class Blackjack extends Juego {
         dealer.voltearCarta(1);
         dealer.mostrarMano();
         while(obtenerPuntajeJugador(dealer) < 17) {
-            dealer.pedirCarta(baraja);
+            dealer.sacarCarta(baraja);
             dealer.mostrarMano();
         }
         System.out.println("------------------------------------------------------------------------");
     }
 
-    private void obtenerJugadoresEnJuego(ArrayList<Jugador> jugadoresEnJuego) {
+    private void obtenerJugadoresQueSiguenEnJuego(ArrayList<Jugador> jugadoresEnJuego) {
         for (Jugador jugador : jugadores) {
             if (obtenerPuntajeJugador(jugador) > 21) {
                 pagarApuesta(jugador);
@@ -148,7 +106,7 @@ public class Blackjack extends Juego {
 
     public void verficarGanador(){
         ArrayList<Jugador> jugadoresEnJuego = new ArrayList<>();
-        obtenerJugadoresEnJuego(jugadoresEnJuego);
+        obtenerJugadoresQueSiguenEnJuego(jugadoresEnJuego);
         if (obtenerPuntajeJugador(dealer) > 21) {
             jugadoresEnJuego.forEach(this::recibirDinero);
         }else{
@@ -157,56 +115,33 @@ public class Blackjack extends Juego {
     }
 
     private void compararPuntaje(Jugador jugador) {
-        if(obtenerPuntajeJugador(dealer) > obtenerPuntajeJugador(jugador)) {
+        int puntajeJugador = obtenerPuntajeJugador(jugador);
+        int puntajeDealer = obtenerPuntajeJugador(dealer);
+        if(puntajeDealer > puntajeJugador) {
             pagarApuesta(jugador);
-        } else if(obtenerPuntajeJugador(dealer) < obtenerPuntajeJugador(jugador)) {
+        } else if(puntajeDealer < puntajeJugador || puntajeJugador == 21) {
             recibirDinero(jugador);
         } else {
             System.out.println(jugador.getNombre() + " recupera su apuesta");
         }
     }
 
-    private void recibirDinero(Jugador jugador) {
-        System.out.println(jugador.getNombre() + " gana " + (jugador.getApuesta()*2) + " pesos");
-        int monto = jugador.getMonto();
-        int apuesta = jugador.getApuesta();
-        jugador.setMonto(monto + (apuesta*2));
-    }
 
-    private void pagarApuesta(Jugador jugador) {
-        System.out.println(jugador.getNombre() + " pierde " + jugador.getApuesta() + " pesos");
-        int monto = jugador.getMonto();
-        int apuesta = jugador.getApuesta();
-        jugador.setMonto(monto - apuesta);
-    }
-
-    private void mostrarResultadosFinales(){
+    public void mostrarResultadosFinales(){
         System.out.println("------------------------------------------------------------------------");
+        System.out.println("Puntaje del Dealer " + ": " + obtenerPuntajeJugador(dealer));
         mostrarPuntajes();
         System.out.println("------------------------------------------------------------------------");
-        mostrarMontosFinales();
+        mostrarMontos();
     }
 
-    private void mostrarPuntajes(){
-        System.out.println("Puntaje del Dealer " + ": " + obtenerPuntajeJugador(dealer));
-        jugadores.stream()
-                .map(jugador -> "Puntaje de " + jugador.getNombre() + ": " + obtenerPuntajeJugador(jugador))
-                .forEach(System.out::println);
+    public void limpiarJuego() {
+        jugadores.forEach(Jugador::limpiarMano);
+        baraja.limpiarBaraja();
+        dealer.limpiarMano();
     }
 
-    private void mostrarMontosFinales(){
-        jugadores.stream()
-                .map(jugador -> "Monto final de " + jugador.getNombre() + ": " + jugador.getMonto())
-                .forEach(System.out::println);
-    }
-
-    private void limpiarJuego() {
-        jugadores.forEach(jugador -> jugador.getMano().getCartas().clear());
-        baraja.getCartas().clear();
-        dealer.getMano().getCartas().clear();
-    }
-
-    private void mostrarMenu(){
+    public void mostrarMenu(){
         System.out.print("[1].Pedir Carta\n[2].Partir Mano\n[3].Bajarse\n> ");
     }
 }

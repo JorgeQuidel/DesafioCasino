@@ -23,16 +23,31 @@ public class Jugador {
         this.monto = monto;
     }
 
-    public void pedirCarta(Baraja baraja){
-        mano.addCarta(baraja.sacarCarta());
+    public void sacarCarta(Baraja baraja){
+        try{
+            mano.addCarta(baraja.sacarCarta());
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("No hay cartas para sacar");
+        }
     }
 
     public int obtenerPuntajeMano(){
         return mano.obtenerPuntaje();
     }
+    public ArrayList<Carta> obtenerCartasMano(){
+        return mano.getCartas();
+    }
 
     public void voltearCarta(int carta){
-        mano.getCartas().get(carta).voltearCarta();
+        try{
+            mano.getCartas().get(carta).voltearCarta();
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("La mano se encuentra vacía");
+        }
+    }
+
+    public void limpiarMano(){
+        mano.getCartas().clear();
     }
 
     public String getNombre() {
