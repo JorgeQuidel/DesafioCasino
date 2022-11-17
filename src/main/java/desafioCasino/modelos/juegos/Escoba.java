@@ -24,17 +24,7 @@ public class Escoba extends Juego {
     }
 
     @Override
-    public int obtenerPuntajeJugador(Jugador jugador) {
-        return 0;
-    }
-
-    @Override
     public void limpiarJuego() {
-
-    }
-
-    @Override
-    public void mostrarResultadosFinales() {
 
     }
 

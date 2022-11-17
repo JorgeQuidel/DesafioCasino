@@ -19,8 +19,8 @@ public class Carta {
         return indice.getValorIndice();
     }
 
-    public String getIndice() {
-        return indice.getStringIndice();
+    public Indice getIndice() {
+        return indice;
     }
 
     public void voltearCarta(){
@@ -28,13 +28,13 @@ public class Carta {
     }
 
     public boolean esAs(){
-        return getIndice().equals("A");
+        return getIndice().equals(Indice.AS);
     }
 
     @Override
     public String toString() {
         if(estaBocaArriba){
-            return indice.getStringIndice() + " " + pinta;
+            return indice + " " + pinta;
         }else {
             return "?";
         }

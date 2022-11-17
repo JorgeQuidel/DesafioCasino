@@ -1,10 +1,13 @@
 package desafioCasino.modelos.juegos;
 
 import desafioCasino.modelos.Baraja;
+import desafioCasino.modelos.Carta;
 import desafioCasino.modelos.Jugador;
+import desafioCasino.modelos.enums.Indice;
 import desafioCasino.utilidades.Utilidad;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class Juego {
@@ -14,9 +17,7 @@ public abstract class Juego {
     public abstract void iniciarBaraja();
     public abstract void iniciarPartida();
     public abstract void turnoJugador(Jugador jugador);
-    public abstract int obtenerPuntajeJugador(Jugador jugador);
     public abstract void limpiarJuego();
-    public abstract void mostrarResultadosFinales();
     public abstract void mostrarMenu();
 
     protected void ingresarJugadores(){
@@ -58,12 +59,6 @@ public abstract class Juego {
         IntStream.range(0, cantidadCartas).mapToObj(i -> baraja).forEach(jugador::sacarCarta);
     }
 
-    protected void mostrarPuntajes(){
-        jugadores.stream()
-                .map(jugador -> "Puntaje de " + jugador.getNombre() + ": " + obtenerPuntajeJugador(jugador))
-                .forEach(System.out::println);
-    }
-
     protected void mostrarMontos(){
         jugadores.stream()
                 .map(jugador -> "Monto de " + jugador.getNombre() + ": " + jugador.getMonto())
@@ -82,6 +77,14 @@ public abstract class Juego {
         int monto = jugador.getMonto();
         int apuesta = jugador.getApuesta();
         jugador.setMonto(monto - apuesta);
+    }
+
+    protected ArrayList<Indice> obtenerIndicesPorCartas(Jugador jugador){
+        return jugador
+                .obtenerCartasMano()
+                .stream()
+                .map(Carta::getIndice)
+                .sorted().collect(Collectors.toCollection(ArrayList::new));
     }
 
 }

@@ -22,6 +22,7 @@ public class Blackjack extends Juego {
         ingresarJugadores();
         do{
             iniciarBaraja();
+            System.out.println(baraja.getCartas().size());
             iniciarManoJugadores(2);
             iniciarDealer();
             iniciarPartida();
@@ -87,7 +88,7 @@ public class Blackjack extends Juego {
         System.out.println("\nTurno del Dealer\n");
         dealer.voltearCarta(1);
         dealer.mostrarMano();
-        while(obtenerPuntajeJugador(dealer) < 17) {
+        while(obtenerPuntajeJugador(dealer) < 17 && !baraja.noQuedanCartas()) {
             dealer.sacarCarta(baraja);
             dealer.mostrarMano();
         }
@@ -126,6 +127,11 @@ public class Blackjack extends Juego {
         }
     }
 
+    private void mostrarPuntajes(){
+        jugadores.stream()
+                .map(jugador -> "Puntaje de " + jugador.getNombre() + ": " + obtenerPuntajeJugador(jugador))
+                .forEach(System.out::println);
+    }
 
     public void mostrarResultadosFinales(){
         System.out.println("------------------------------------------------------------------------");

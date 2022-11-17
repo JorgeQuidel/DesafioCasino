@@ -24,11 +24,19 @@ public class Jugador {
     }
 
     public void sacarCarta(Baraja baraja){
-        try{
-            mano.addCarta(baraja.sacarCarta());
-        }catch (IndexOutOfBoundsException e){
+        if(baraja.noQuedanCartas()){
             System.out.println("No hay cartas para sacar");
+            return;
         }
+        mano.addCarta(baraja.sacarCarta());
+    }
+
+    public void sacarUltimaCarta(Baraja baraja){
+        if(baraja.noQuedanCartas()){
+            System.out.println("No hay cartas para sacar");
+            return;
+        }
+        mano.addCarta(baraja.sacarCarta(baraja.cantidadCartas()-1));
     }
 
     public int obtenerPuntajeMano(){
