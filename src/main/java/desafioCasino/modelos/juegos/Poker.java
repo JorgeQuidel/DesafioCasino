@@ -24,6 +24,11 @@ public class Poker extends Juego {
     }
 
     @Override
+    public void bajarse(Jugador jugador) {
+
+    }
+
+    @Override
     public void limpiarJuego() {
 
     }

@@ -13,10 +13,12 @@ import java.util.stream.IntStream;
 public abstract class Juego {
     protected ArrayList<Jugador> jugadores;
     protected Baraja baraja;
+    protected boolean terminoTurno;
     public abstract void jugar();
     public abstract void iniciarBaraja();
     public abstract void iniciarPartida();
     public abstract void turnoJugador(Jugador jugador);
+    public abstract void bajarse(Jugador jugador);
     public abstract void limpiarJuego();
     public abstract void mostrarMenu();
 

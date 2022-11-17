@@ -17,6 +17,7 @@ public class Carioca extends Juego {
         this.pila = new Baraja();
         this.jugadores = new ArrayList<>();
         this.terminoPartida = false;
+        this.terminoTurno = false;
     }
 
     @Override
@@ -49,23 +50,16 @@ public class Carioca extends Juego {
 
     @Override
     public void turnoJugador(Jugador jugador) {
-        bucle:
-        while (!terminoPartida){
+        terminoTurno = false;
+        while (!terminoTurno && !terminoPartida){
             mostrarCartaSuperiorPila();
             jugador.mostrarMano();
             mostrarMenu();
             switch (Utilidad.pedirOpcionEntera()) {
-                case 1:
-                    sacarCartaMazo(jugador);
-                    break bucle;
-                case 2:
-                    sacarCartaPila(jugador);
-                    break bucle;
-                case 3:
-                    comprobarTrios(jugador);
-                    break;
-                default:
-                    System.err.println("Por favor, ingrese una de las opciones");
+                case 1 -> sacarCartaMazo(jugador);
+                case 2 -> sacarCartaPila(jugador);
+                case 3 -> comprobarTrios(jugador);
+                default -> System.err.println("Por favor, ingrese una de las opciones");
             }
         }
 
@@ -78,6 +72,11 @@ public class Carioca extends Juego {
         }else{
             System.out.println("Pila vacia");
         }
+    }
+
+    private void sacarCartaMazo(Jugador jugador) {
+        jugador.sacarCarta(baraja);
+        menuBotarCarta(jugador);
     }
 
     private void sacarCartaPila(Jugador jugador) {
@@ -96,6 +95,13 @@ public class Carioca extends Juego {
         }while(jugador.obtenerCartasMano().size() != 6 && !terminoPartida);
     }
 
+    private void mostrarCartasConIndice(ArrayList<Carta> cartas){
+        for (int indice = 0; indice < cartas.size(); indice++) {
+            Carta carta = cartas.get(indice);
+            System.out.println((indice + 1) + ".[" + carta + "]");
+        }
+    }
+
     private void elegirOpcionMenuBotarCarta(Jugador jugador, ArrayList<Carta> cartasJugador){
         int indiceCarta = Utilidad.pedirOpcionEntera() - 1;
         if(indiceCarta >= 0 && indiceCarta < cartasJugador.size()){
@@ -107,28 +113,17 @@ public class Carioca extends Juego {
         }
     }
 
+    public void botarCarta(Jugador jugador, Carta carta){
+        jugador.obtenerCartasMano().remove(carta);
+        pila.getCartas().add(carta);
+        terminoTurno = true;
+    }
+
     private void comprobarTrios(Jugador jugador){
         if(hayTrios(jugador, 2)){
             bajarse(jugador);
         }else{
             System.out.println("No puedes bajarte con tu mano actual");
-        }
-    }
-
-    public void botarCarta(Jugador jugador, Carta carta){
-        jugador.obtenerCartasMano().remove(carta);
-        pila.getCartas().add(carta);
-    }
-
-    private void sacarCartaMazo(Jugador jugador) {
-        jugador.sacarCarta(baraja);
-        menuBotarCarta(jugador);
-    }
-
-    private void mostrarCartasConIndice(ArrayList<Carta> cartas){
-        for (int indice = 0; indice < cartas.size(); indice++) {
-            Carta carta = cartas.get(indice);
-            System.out.println((indice + 1) + ".[" + carta + "]");
         }
     }
 
@@ -154,10 +149,11 @@ public class Carioca extends Juego {
         return Collections.frequency(indices, indice) == 3;
     }
 
-    private void bajarse(Jugador jugador){
+    public void bajarse(Jugador jugador){
         System.out.println(jugador.getNombre() + " se baja\n");
         recibirDinero(jugador);
         jugadores.stream().filter(jugadorRestante -> !jugadorRestante.equals(jugador)).forEach(this::pagarApuesta);
+        terminoTurno = true;
         terminoPartida = true;
     }
 

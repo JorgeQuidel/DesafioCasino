@@ -15,6 +15,7 @@ public class Blackjack extends Juego {
         this.baraja = new Baraja();
         this.jugadores = new ArrayList<>();
         this.dealer = new Jugador(true);
+        this.terminoTurno = false;
     }
 
     @Override
@@ -51,10 +52,9 @@ public class Blackjack extends Juego {
     }
 
     public void turnoJugador(Jugador jugador){
-        System.out.println("Turno de " + jugador.getNombre() + "\n");
-        if(obtenerPuntajeJugador(jugador) == 21) {mostrarBlackjack(jugador); return;}
-        bucle:
-        while (true){
+        terminoTurno = false;
+        comprobarBlackjack(jugador);
+        while (!terminoTurno){
             jugador.mostrarMano();
             dealer.mostrarMano();
             if (obtenerPuntajeJugador(jugador)>21) {System.out.println(jugador.getNombre() + " a PERDIDO!\n"); break;}
@@ -62,10 +62,23 @@ public class Blackjack extends Juego {
             switch (Utilidad.pedirOpcionEntera()) {
                 case 1 -> jugador.sacarCarta(baraja);
                 case 2 -> System.out.println("No implementado");
-                case 3 -> {System.out.println(jugador.getNombre() + " se baja\n"); break bucle;}
+                case 3 -> bajarse(jugador);
                 default -> System.err.println("Por favor, ingrese una de las opciones");
             }
         }
+    }
+
+    public void comprobarBlackjack(Jugador jugador){
+        if(obtenerPuntajeJugador(jugador) == 21) {
+            mostrarBlackjack(jugador);
+            terminoTurno = true;
+        }
+    }
+
+    @Override
+    public void bajarse(Jugador jugador) {
+        System.out.println(jugador.getNombre() + " se baja\n");
+        terminoTurno = true;
     }
 
     public int obtenerPuntajeJugador(Jugador jugador){
